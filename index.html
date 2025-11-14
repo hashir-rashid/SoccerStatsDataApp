@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Sports Stats – Home</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<header class="top-nav">
+    <h1>Sports Stats Dashboard</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="compare.html">Compare Players</a>
+    </nav>
+</header>
+
+<main class="container">
+    <!-- Views / 10 queries section -->
+    <section class="card">
+        <h2>Database Views</h2>
+        <div class="controls-row">
+            <label for="viewSelect">Select View:</label>
+            <select id="viewSelect">
+                <option value="1">View 1 – Example: Top Scorers</option>
+                <option value="2">View 2 – Example: Players by Team</option>
+                <option value="3">View 3</option>
+                <option value="4">View 4</option>
+                <option value="5">View 5</option>
+                <option value="6">View 6</option>
+                <option value="7">View 7</option>
+                <option value="8">View 8</option>
+                <option value="9">View 9</option>
+                <option value="10">View 10</option>
+            </select>
+            <button id="loadViewBtn">Load View</button>
+            <span id="viewStatus" class="status"></span>
+        </div>
+
+        <div class="scroll-box">
+            <table id="viewTable">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Search / Filter section -->
+    <section class="card">
+        <h2>Search & Filter Players</h2>
+        <form id="searchForm" class="controls-row">
+            <input
+                    type="text"
+                    id="searchQuery"
+                    placeholder="Search by player name..."
+            />
+
+            <select id="teamFilter">
+                <option value="">All Teams</option>
+                <!-- Optionally populate via API -->
+                <option value="Team A">Team A</option>
+                <option value="Team B">Team B</option>
+            </select>
+
+            <select id="positionFilter">
+                <option value="">All Positions</option>
+                <option value="Forward">Forward</option>
+                <option value="Midfielder">Midfielder</option>
+                <option value="Defender">Defender</option>
+                <option value="Goalkeeper">Goalkeeper</option>
+            </select>
+
+            <button type="submit">Search</button>
+            <span id="searchStatus" class="status"></span>
+        </form>
+
+        <div class="scroll-box">
+            <table id="searchTable">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Visualization section -->
+    <section class="card">
+        <h2>Top Players (Chart)</h2>
+        <p class="hint">This chart is driven by data from one of your views (e.g. Top Scorers).</p>
+        <canvas id="summaryChart" height="120"></canvas>
+        <button id="reloadChartBtn">Reload Chart Data</button>
+        <span id="chartStatus" class="status"></span>
+    </section>
+</main>
+
+<footer class="footer">
+    <small>Project – Sports Stats Frontend</small>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
