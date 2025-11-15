@@ -81,5 +81,35 @@
   </div>
 
   <script src="js/dashboard.js"></script>
+<<<<<<< Updated upstream
+=======
+
+  <!-- Data test -->
+  <script>
+    // Load players
+    async function loadPlayers() {
+      try {
+        const response = await fetch('/api/players');
+        const players = await response.json();
+        displayPlayers(players);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    // Search players
+    async function searchPlayers(searchTerm) {
+      const response = await fetch(`/api/search/${encodeURIComponent(searchTerm)}`);
+      const results = await response.json();
+      return results;
+    }
+
+    // Get player details
+    async function getPlayerDetails(playerId) {
+      const response = await fetch(`/api/players/${playerId}`);
+      return await response.json();
+    }
+  </script>
+>>>>>>> Stashed changes
 </body>
 </html>
