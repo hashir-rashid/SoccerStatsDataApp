@@ -85,14 +85,23 @@
   <!-- Data test -->
   <script>
     // Load players
-    async function loadPlayers() {
+    async function loadPlayers(limit = 100) {  // Default to 100 if not specified
       try {
-        const response = await fetch('/api/players');
+        const response = await fetch(`/api/players?limit=${limit}`);
         const players = await response.json();
         displayPlayers(players);
       } catch (error) {
         console.error('Error:', error);
       }
+    }
+
+    // Display players in console
+    function displayPlayers(players) {
+      console.log('=== PLAYERS LIST ===');
+      players.forEach(player => {
+        console.log(`ID: ${player.id} | Name: ${player.player_name} | Birthday: ${player.birthday}`);
+      });
+      console.log(`Total players: ${players.length}`);
     }
 
     // Search players
