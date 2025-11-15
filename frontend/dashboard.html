@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-M">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compare Players - Sports Analytics</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Dashboard - Sports Analytics</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -17,7 +17,8 @@
         <h1 class="logo-title">Sports Analytics</h1>
       </div>
       <div class="user-info">
-        <span class="user-display" id="user-name-display"></span>
+        <span class="user-display" id="user-name-display">
+          </span>
         <button id="logout-button" class="btn-outline">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-xs"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
           Logout
@@ -54,116 +55,31 @@
     </aside>
 
     <main class="main-content">
+      <h1 class="main-title">Dashboard</h1>
+      <p class="main-subtitle">Welcome back, <span id="user-name-greeting">User</span>!</p>
       
-      <h1 class="main-title">Player Comparison</h1>
-      <p class="main-subtitle">Select two players to compare their stats side-by-side.</p>
-
-      <div class="content-card">
-        <table class="data-table comparison-table">
-          <thead>
-            <tr>
-              <th>Statistic</th>
-              <th>
-                <select id="player1-select" class="comparison-select"></select>
-              </th>
-              <th>
-                <select id="player2-select" class="comparison-select"></select>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="stat-category">
-              <td colspan="3">General</td>
-            </tr>
-            <tr>
-              <td>Overall Rating</td>
-              <td id="p1-overall_rating">...</td>
-              <td id="p2-overall_rating">...</td>
-            </tr>
-            <tr>
-              <td>Potential</td>
-              <td id="p1-potential">...</td>
-              <td id="p2-potential">...</td>
-            </tr>
-            <tr>
-              <td>Height</td>
-              <td id="p1-height">...</td>
-              <td id="p2-height">...</td>
-            </tr>
-            <tr>
-              <td>Weight</td>
-              <td id="p1-weight">...</td>
-              <td id="p2-weight">...</td>
-            </tr>
-            
-            <tr class="stat-category">
-              <td colspan="3">Attacking</td>
-            </tr>
-            <tr>
-              <td>Finishing</td>
-              <td id="p1-finishing">...</td>
-              <td id="p2-finishing">...</td>
-            </tr>
-            <tr>
-              <td>Short Passing</td>
-              <td id="p1-short_passing">...</td>
-              <td id="p2-short_passing">...</td>
-            </tr>
-            <tr>
-              <td>Dribbling</td>
-              <td id="p1-dribbling">...</td>
-              <td id="p2-dribbling">...</td>
-            </tr>
-            
-            <tr class="stat-category">
-              <td colspan="3">Physical</td>
-            </tr>
-            <tr>
-              <td>Sprint Speed</td>
-              <td id="p1-sprint_speed">...</td>
-              <td id="p2-sprint_speed">...</td>
-            </tr>
-            <tr>
-              <td>Acceleration</td>
-              <td id="p1-acceleration">...</td>
-              <td id="p2-acceleration">...</td>
-            </tr>
-            <tr>
-              <td>Stamina</td>
-              <td id="p1-stamina">...</td>
-              <td id="p2-stamina">...</td>
-            </tr>
-            <tr>
-              <td>Strength</td>
-              <td id="p1-strength">...</td>
-              <td id="p2-strength">...</td>
-            </tr>
-
-            <tr class="stat-category">
-              <td colspan="3">Goalkeeping</td>
-            </tr>
-            <tr>
-              <td>GK Diving</td>
-              <td id="p1-gk_diving">...</td>
-              <td id="p2-gk_diving">...</td>
-            </tr>
-            <tr>
-              <td>GK Handling</td>
-              <td id="p1-gk_handling">...</td>
-              <td id="p2-gk_handling">...</td>
-            </tr>
-            <tr>
-              <td>GK Kicking</td>
-              <td id="p1-gk_kicking">...</td>
-              <td id="p2-gk_kicking">...</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <h3 class="stat-title">Total Players</h3>
+          <p class="stat-value">1,200</p>
+        </div>
+        <div class="stat-card">
+          <h3 class="stat-title">Teams</h3>
+          <p class="stat-value">64</p>
+        </div>
+        <div class="stat-card">
+          <h3 class="stat-title">Matches Scheduled</h3>
+          <p class="stat-value">88</p>
+        </div>
+        <div class="stat-card">
+          <h3 class="stat-title">Data Points</h3>
+          <p class="stat-value">1.4M</p>
+        </div>
       </div>
-
     </main>
+
   </div>
 
-  <script src="compare.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>
