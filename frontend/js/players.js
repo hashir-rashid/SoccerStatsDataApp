@@ -1,5 +1,3 @@
-// players.js
-
 document.addEventListener("DOMContentLoaded", () => {
 
   // 1. --- AUTHENTICATION CHECK ---
@@ -38,10 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4. --- LOAD REAL PLAYERS FROM API (SQLite) ---
   const tableBody = document.getElementById("players-table-body");
 
-  async function loadPlayers() {
+  async function loadPlayers(limit = 500) {
     try {
       // Ask backend for first 100 players from the SQLite DB
-      const response = await fetch("/api/players?limit=100&page=1");
+      const response = await fetch(`/api/players?limit=${limit}&page=1`);
 
       if (!response.ok) {
         throw new Error(`Failed to fetch players: ${response.status}`);
