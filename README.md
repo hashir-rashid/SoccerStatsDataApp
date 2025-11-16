@@ -10,7 +10,8 @@ npm install
 ```
 
 ### Download the database file  
-Go to https://www.kaggle.com/datasets/hugomathien/soccer, and place it in the `backend/database/` directory
+Go to https://www.kaggle.com/datasets/hugomathien/soccer, and place it in the `backend/database/` directory.  
+Ensure it is named `database.sqlite`
 
 ### Run the app
 ```node
