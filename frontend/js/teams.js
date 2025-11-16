@@ -1,7 +1,6 @@
 // teams.js
 
 document.addEventListener("DOMContentLoaded", () => {
-  
   // 1. --- AUTHENTICATION CHECK ---
   if (localStorage.getItem("isAuthenticated") !== "true") {
     alert("You must be logged in to view this page.");
@@ -23,64 +22,98 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.clear();
     window.location.href = "login.html";
   });
-  
+
   // 3. --- SET ACTIVE NAV LINK ---
-  // Deactivate other links
   document.getElementById("nav-dashboard")?.classList.remove("active");
   document.getElementById("nav-players")?.classList.remove("active");
-  
-  // Activate teams link
+
   const teamsLink = document.getElementById("nav-teams");
   if (teamsLink) {
     teamsLink.classList.add("active");
   }
 
-  // 4. --- MOCK TEAM DATA & RENDER CARDS ---
-  const mockTeams = [
-    { name: "Warriors", coach: "Steve Kerr", players: 15, wins: 57, losses: 25 },
-    { name: "Lions", coach: "Dan Campbell", players: 14, wins: 45, losses: 37 },
-    { name: "Tigers", coach: "A.J. Hinch", players: 16, wins: 30, losses: 52 },
-    { name: "Panthers", coach: "Frank Reich", players: 15, wins: 50, losses: 32 },
-  ];
-
+  // 4. --- LOAD REAL TEAMS FROM API (SQLite) ---
   const gridContainer = document.getElementById("team-grid-container");
 
-  // Clear existing content
-  gridContainer.innerHTML = ""; 
+  async function loadTeams() {
+    try {
+      // first 100 teams
+      const response = await fetch("/api/teams?limit=100&page=1");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch teams: ${response.status}`);
+      }
 
-  // Loop through data and create team cards
-  mockTeams.forEach(team => {
-    // Create a new div element for the card
-    const card = document.createElement("div");
-    card.className = "team-card";
-    
-    // Set the inner HTML of the card
-    card.innerHTML = `
-      <div class="team-card-banner">
-        <span>${team.name}</span>
-      </div>
-      <div class="team-card-content">
-        <h3 class="team-card-title">${team.name}</h3>
-        <p class="team-card-meta">Coach: ${team.coach}</p>
-        
-        <div class="team-card-stats">
-          <div class="stat">
-            <div class="stat-label">Players</div>
-            <div class="stat-value-sm">${team.players}</div>
+      const teams = await response.json();
+
+      // Clear existing content
+      gridContainer.innerHTML = "";
+
+      if (!Array.isArray(teams) || teams.length === 0) {
+        gridContainer.innerHTML = `
+          <div class="team-card">
+            <div class="team-card-content">
+              <h3 class="team-card-title">No teams found</h3>
+              <p class="team-card-meta">There are no teams in the database.</p>
+            </div>
           </div>
-          <div class="stat">
-            <div class="stat-label">Wins</div>
-            <div class="stat-value-sm">${team.wins}</div>
+        `;
+        return;
+      }
+
+      teams.forEach((team) => {
+        const card = document.createElement("div");
+        card.className = "team-card";
+
+        const name = team.team_long_name || "Unknown team";
+        const shortName = team.team_short_name || name;
+
+        // The SQLite Team table in this dataset doesn’t store coach/wins/losses,
+        // so we just show placeholders for those stats.
+        const coach = "N/A";
+        const playersCount = "N/A";
+        const wins = "-";
+        const losses = "-";
+
+        card.innerHTML = `
+          <div class="team-card-banner">
+            <span>${shortName}</span>
           </div>
-          <div class="stat">
-            <div class="stat-label">Losses</div>
-            <div class="stat-value-sm">${team.losses}</div>
+          <div class="team-card-content">
+            <h3 class="team-card-title">${name}</h3>
+            <p class="team-card-meta">Coach: ${coach}</p>
+            
+            <div class="team-card-stats">
+              <div class="stat">
+                <div class="stat-label">Players</div>
+                <div class="stat-value-sm">${playersCount}</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Wins</div>
+                <div class="stat-value-sm">${wins}</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Losses</div>
+                <div class="stat-value-sm">${losses}</div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        gridContainer.appendChild(card);
+      });
+    } catch (err) {
+      console.error("Error loading teams:", err);
+      gridContainer.innerHTML = `
+        <div class="team-card">
+          <div class="team-card-content">
+            <h3 class="team-card-title">Error</h3>
+            <p class="team-card-meta">Failed to load teams from the server.</p>
           </div>
         </div>
-      </div>
-    `;
-    
-    // Append the new card to the grid
-    gridContainer.appendChild(card);
-  });
+      `;
+    }
+  }
+
+  // Kick it off
+  loadTeams();
 });
