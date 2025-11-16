@@ -1,5 +1,8 @@
 # Soccerats Soccer Stats
-Since I'm the coolest, we are using this name for the project and no objections. How to run:
+Since I'm the coolest, we are using this name for the project and no objections.
+
+## Requirements
+- NodeJs (latest version)
 
 ## How to run
 ### Clone the repo and install dependencies
