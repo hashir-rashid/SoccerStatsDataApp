@@ -12,19 +12,43 @@ app.use(express.json());
 // Serve frontend files
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Database setup - point this to your existing .sqlite file
-const dbPath = path.join(__dirname, 'database', 'database.sqlite');
-const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READONLY, (err) => {
+// TWO SEPARATE DATABASE CONNECTIONS:
+
+// 1. READ-ONLY: For sports data (players, teams, matches)
+const sportsDbPath = path.join(__dirname, 'database', 'database.sqlite');
+const sportsDb = new sqlite3.Database(sportsDbPath, sqlite3.OPEN_READONLY, (err) => {
   if (err) {
-    console.error('Error opening database:', err.message);
+    console.error('Error opening sports database:', err.message);
   } else {
-    console.log('Connected to SQLite database');
+    console.log('Connected to READ-ONLY sports database');
   }
 });
 
-// API Routes
+// 2. READ-WRITE: For user authentication data
+const authDbPath = path.join(__dirname, 'database', 'users_database.sqlite');
+const authDb = new sqlite3.Database(authDbPath, (err) => {
+  if (err) {
+    console.error('Error opening auth database:', err.message);
+  } else {
+    console.log('Connected to READ-WRITE auth database');
+    
+    // Create users table if it doesn't exist
+    authDb.run(`CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      role TEXT DEFAULT 'user',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+  }
+});
 
-// Get all players with pagination
+// Import and use auth routes (pass the authDb)
+const authRoutes = require('./auth')(authDb);
+app.use('/api/auth', authRoutes);
+
+// Sports data routes use sportsDb
 app.get('/api/players', (req, res) => {
   const { page = 1, limit = 50, search } = req.query;
   const offset = (page - 1) * limit;
@@ -40,7 +64,8 @@ app.get('/api/players', (req, res) => {
   query += ` LIMIT ? OFFSET ?`;
   params.push(limit, offset);
   
-  db.all(query, params, (err, rows) => {
+  // Use sportsDb (read-only)
+  sportsDb.all(query, params, (err, rows) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;

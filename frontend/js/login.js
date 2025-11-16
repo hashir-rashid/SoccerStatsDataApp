@@ -1,5 +1,3 @@
-// login.js
-
 // This runs when the script is loaded
 document.addEventListener("DOMContentLoaded", () => {
   // Check if user is already logged in (using localStorage)
@@ -16,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const errorMessage = document.getElementById("error-message");
 
   // Add event listener for the form submission
-  loginForm.addEventListener("submit", (e) => {
+  loginForm.addEventListener("submit", async (e) => {
     // Prevent the form from actually submitting (which reloads the page)
     e.preventDefault();
 
@@ -37,37 +35,36 @@ document.addEventListener("DOMContentLoaded", () => {
     loginButton.disabled = true;
     loginButton.textContent = "Logging in...";
 
-    // 3. Simulate the 'login' function (mocking the API call)
-    // We use setTimeout to simulate a network delay
-    setTimeout(() => {
-      // Mocked login logic based on demo credentials
-      if (
-        (email === "admin@sports.com" && password === "admin123") ||
-        (email === "user@sports.com" && password === "user123")
-      ) {
-        // --- Success ---
-        
-        // 1. Store user state in localStorage
+    // 3. Fetch login data
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Login successful - store user info in localStorage for client-side use
         localStorage.setItem("isAuthenticated", "true");
-        localStorage.setItem("userName", email === "admin@sports.com" ? "Demo Admin" : "Demo User");
-        localStorage.setItem("userRole", email === "admin@sports.com" ? "Admin" : "User");
-
-        // 2. Show success (using a simple alert instead of a 'toast')
+        localStorage.setItem("userName", data.user.name);
+        localStorage.setItem("userRole", data.user.role);
+        localStorage.setItem("userEmail", data.user.email);
+        
         alert("Logged in successfully!");
-
-        // 3. Redirect to the dashboard
         window.location.href = "dashboard.html";
-
       } else {
-        // --- Failure ---
-        
-        // 1. Show error message
-        errorMessage.textContent = "Invalid email or password";
-        
-        // 2. Re-enable the button
+          errorMessage.textContent = data.error;
+      }
+    } catch (error) {
+        errorMessage.textContent = "Network error. Please try again.";
+        console.error('Login error:', error);
+    } finally {
         loginButton.disabled = false;
         loginButton.textContent = "Login";
-      }
-    }, 1000); // 1-second delay
+    }
   });
 });

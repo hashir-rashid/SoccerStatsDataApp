@@ -1,5 +1,3 @@
-// register.js
-
 document.addEventListener("DOMContentLoaded", () => {
   // Redirect if already logged in
   if (localStorage.getItem("isAuthenticated") === "true") {
@@ -15,10 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerButton = document.getElementById("register-button");
   const errorMessage = document.getElementById("error-message");
 
-  registerForm.addEventListener("submit", (e) => {
+  registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Get values
     const name = nameInput.value;
     const email = emailInput.value;
     const password = passwordInput.value;
@@ -26,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     errorMessage.textContent = "";
 
-    // 1. Validation (from the original code)
+    // Client-side validation
     if (!name || !email || !password || !confirmPassword) {
       errorMessage.textContent = "Please fill in all fields";
       return;
@@ -40,28 +37,38 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 2. Disable button
     registerButton.disabled = true;
     registerButton.textContent = "Creating account...";
 
-    // 3. Simulate registration
-    setTimeout(() => {
-      // In a real app, you'd check if the email already exists
-      // For this demo, we will just assume it's successful
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password })
+      });
 
-      // --- Success ---
-      
-      // 1. Store user state in localStorage
-      localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("userName", name);
-      localStorage.setItem("userRole", "User"); // Default new users to "User"
+      const data = await response.json();
 
-      // 2. Show success
-      alert("Account created successfully!");
-
-      // 3. Redirect to dashboard
-      window.location.href = "dashboard.html";
-
-    }, 1000);
+      if (response.ok) {
+        // Registration successful - automatically log them in
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("userName", data.user.name);
+        localStorage.setItem("userRole", data.user.role);
+        localStorage.setItem("userEmail", data.user.email);
+        
+        alert("Account created successfully!");
+        window.location.href = "dashboard.html";
+      } else {
+        errorMessage.textContent = data.error;
+      }
+    } catch (error) {
+      errorMessage.textContent = "Network error. Please try again.";
+      console.error('Registration error:', error);
+    } finally {
+      registerButton.disabled = false;
+      registerButton.textContent = "Register";
+    }
   });
 });
