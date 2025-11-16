@@ -35,9 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4. --- LOAD REAL TEAMS FROM API (SQLite) ---
   const gridContainer = document.getElementById("team-grid-container");
 
-  async function loadTeams(limit = 100) {
+  async function loadTeams(limit = 10) {
     try {
-      // first 100 teams
+      // Ask backend for first x teams from the SQLite DB
       const response = await fetch(`/api/teams?limit=${limit}&page=1`);
       if (!response.ok) {
         throw new Error(`Failed to fetch teams: ${response.status}`);

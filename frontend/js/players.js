@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadPlayers(limit = 500) {
     try {
-      // Ask backend for first 100 players from the SQLite DB
+      // Ask backend for first x players from the SQLite DB
       const response = await fetch(`/api/players?limit=${limit}&page=1`);
 
       if (!response.ok) {

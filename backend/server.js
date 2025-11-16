@@ -85,7 +85,7 @@ app.get('/api/players/:id', (req, res) => {
     LIMIT 1
   `;
   
-  db.get(query, [req.params.id], (err, row) => {
+  sportsDb.get(query, [req.params.id], (err, row) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
@@ -102,7 +102,7 @@ app.get('/api/players/:id/stats', (req, res) => {
     ORDER BY date DESC
   `;
   
-  db.all(query, [req.params.id], (err, rows) => {
+  sportsDb.all(query, [req.params.id], (err, rows) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
@@ -115,7 +115,7 @@ app.get('/api/players/:id/stats', (req, res) => {
 app.get('/api/teams', (req, res) => {
   const query = `SELECT * FROM Team ORDER BY team_long_name`;
   
-  db.all(query, [], (err, rows) => {
+  sportsDb.all(query, [], (err, rows) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
@@ -135,7 +135,7 @@ app.get('/api/teams/:id', (req, res) => {
     LIMIT 1
   `;
   
-  db.get(query, [req.params.id], (err, row) => {
+  sportsDb.get(query, [req.params.id], (err, row) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
@@ -152,7 +152,7 @@ app.get('/api/leagues', (req, res) => {
     JOIN Country c ON l.country_id = c.id
   `;
   
-  db.all(query, [], (err, rows) => {
+  sportsDb.all(query, [], (err, rows) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
@@ -176,7 +176,7 @@ app.get('/api/search/:term', (req, res) => {
   queries.forEach(({ table, query }) => {
     const params = table === 'Team' ? [term, term] : [term];
     
-    db.all(query, params, (err, rows) => {
+    sportsDb.all(query, params, (err, rows) => {
       results[table.toLowerCase()] = rows || [];
       completed++;
       
