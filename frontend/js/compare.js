@@ -1,7 +1,4 @@
-// compare.js
-
 document.addEventListener("DOMContentLoaded", () => {
-  
   // 1. --- AUTHENTICATION CHECK ---
   if (localStorage.getItem("isAuthenticated") !== "true") {
     alert("You must be logged in to view this page.");
@@ -21,289 +18,242 @@ document.addEventListener("DOMContentLoaded", () => {
 
   logoutButton.addEventListener("click", () => {
     localStorage.clear();
-    window.location.href = "/login.html";
+    window.location.href = "login.html";
   });
-  
+
   // 3. --- SET ACTIVE NAV LINK ---
-  // Deactivate other links
   document.getElementById("nav-dashboard")?.classList.remove("active");
   document.getElementById("nav-players")?.classList.remove("active");
   document.getElementById("nav-teams")?.classList.remove("active");
-  document.getElementById("nav-matches")?.classList.remove("active");
   document.getElementById("nav-statistics")?.classList.remove("active");
-  
-  // Activate compare link
+
   const compareLink = document.getElementById("nav-compare");
   if (compareLink) {
     compareLink.classList.add("active");
   }
 
-  // 4. --- MOCK PLAYER DATABASE (25 Players) ---
-  const mockPlayerDatabase = [
-    {
-      id: 1, player_name: "Lionel Messi",
-      overall_rating: 93, potential: 93, height: "170 cm", weight: "72 kg",
-      finishing: 95, short_passing: 91, dribbling: 96,
-      sprint_speed: 80, acceleration: 91, stamina: 72, strength: 69,
-      gk_diving: 6, gk_handling: 11, gk_kicking: 15
+  // 4. --- PLAYER SEARCH ELEMENTS ---
+  const player1Input = document.getElementById("player1-search");
+  const player2Input = document.getElementById("player2-search");
+  const player1Suggestions = document.getElementById("player1-suggestions");
+  const player2Suggestions = document.getElementById("player2-suggestions");
+
+  let selectedPlayer1 = null;
+  let selectedPlayer2 = null;
+
+  // 5. --- STAT RENDERING CONFIG ---
+  const statRenderers = {
+    overall_rating: (p) => p.overall_rating ?? "N/A",
+    potential: (p) => p.potential ?? "N/A",
+
+    height: (p) => {
+      if (!p.height) return "N/A";
+      return `${Math.round(p.height)} cm`;
     },
-    {
-      id: 2, player_name: "Cristiano Ronaldo",
-      overall_rating: 92, potential: 92, height: "187 cm", weight: "83 kg",
-      finishing: 94, short_passing: 82, dribbling: 88,
-      sprint_speed: 89, acceleration: 87, stamina: 84, strength: 78,
-      gk_diving: 7, gk_handling: 11, gk_kicking: 15
+
+    weight: (p) => {
+      if (!p.weight) return "N/A";
+      const kg = Math.round(p.weight * 0.453592);
+      return `${kg} kg`;
     },
-    {
-      id: 3, player_name: "Kylian Mbappé",
-      overall_rating: 91, potential: 95, height: "178 cm", weight: "73 kg",
-      finishing: 89, short_passing: 80, dribbling: 92,
-      sprint_speed: 97, acceleration: 97, stamina: 88, strength: 76,
-      gk_diving: 13, gk_handling: 5, gk_kicking: 7
-    },
-    {
-      id: 4, player_name: "Kevin De Bruyne",
-      overall_rating: 91, potential: 91, height: "181 cm", weight: "70 kg",
-      finishing: 82, short_passing: 94, dribbling: 88,
-      sprint_speed: 76, acceleration: 78, stamina: 89, strength: 74,
-      gk_diving: 15, gk_handling: 13, gk_kicking: 5
-    },
-    {
-      id: 5, player_name: "Neymar Jr",
-      overall_rating: 91, potential: 91, height: "175 cm", weight: "68 kg",
-      finishing: 87, short_passing: 87, dribbling: 95,
-      sprint_speed: 89, acceleration: 93, stamina: 81, strength: 50,
-      gk_diving: 9, gk_handling: 9, gk_kicking: 15
-    },
-    {
-      id: 6, player_name: "Robert Lewandowski",
-      overall_rating: 92, potential: 92, height: "185 cm", weight: "81 kg",
-      finishing: 95, short_passing: 85, dribbling: 86,
-      sprint_speed: 78, acceleration: 77, stamina: 76, strength: 86,
-      gk_diving: 15, gk_handling: 6, gk_kicking: 12
-    },
-    {
-      id: 7, player_name: "Mohamed Salah",
-      overall_rating: 90, potential: 90, height: "175 cm", weight: "71 kg",
-      finishing: 91, short_passing: 84, dribbling: 90,
-      sprint_speed: 91, acceleration: 93, stamina: 85, strength: 75,
-      gk_diving: 14, gk_handling: 14, gk_kicking: 9
-    },
-    {
-      id: 8, player_name: "Virgil van Dijk",
-      overall_rating: 90, potential: 91, height: "193 cm", weight: "92 kg",
-      finishing: 60, short_passing: 79, dribbling: 72,
-      sprint_speed: 88, acceleration: 74, stamina: 75, strength: 92,
-      gk_diving: 13, gk_handling: 10, gk_kicking: 13
-    },
-    {
-      id: 9, player_name: "Erling Haaland",
-      overall_rating: 89, potential: 94, height: "195 cm", weight: "94 kg",
-      finishing: 94, short_passing: 77, dribbling: 80,
-      sprint_speed: 94, acceleration: 88, stamina: 82, strength: 93,
-      gk_diving: 7, gk_handling: 14, gk_kicking: 13
-    },
-    {
-      id: 10, player_name: "Thibaut Courtois",
-      overall_rating: 89, potential: 90, height: "199 cm", weight: "96 kg",
-      finishing: 14, short_passing: 32, dribbling: 13,
-      sprint_speed: 46, acceleration: 42, stamina: 38, strength: 70,
-      gk_diving: 84, gk_handling: 89, gk_kicking: 74
-    },
-    {
-      id: 11, player_name: "Manuel Neuer",
-      overall_rating: 90, potential: 90, height: "193 cm", weight: "93 kg",
-      finishing: 13, short_passing: 60, dribbling: 30,
-      sprint_speed: 54, acceleration: 51, stamina: 43, strength: 80,
-      gk_diving: 88, gk_handling: 88, gk_kicking: 91
-    },
-    {
-      id: 12, player_name: "Harry Kane",
-      overall_rating: 89, potential: 89, height: "188 cm", weight: "89 kg",
-      finishing: 93, short_passing: 85, dribbling: 82,
-      sprint_speed: 69, acceleration: 67, stamina: 83, strength: 84,
-      gk_diving: 8, gk_handling: 10, gk_kicking: 11
-    },
-    {
-      id: 13, player_name: "Luka Modric",
-      overall_rating: 88, potential: 88, height: "172 cm", weight: "66 kg",
-      finishing: 76, short_passing: 92, dribbling: 88,
-      sprint_speed: 73, acceleration: 76, stamina: 82, strength: 58,
-      gk_diving: 13, gk_handling: 9, gk_kicking: 7
-    },
-    {
-      id: 14, player_name: "N'Golo Kanté",
-      overall_rating: 88, potential: 88, height: "168 cm", weight: "70 kg",
-      finishing: 65, short_passing: 86, dribbling: 81,
-      sprint_speed: 77, acceleration: 82, stamina: 97, strength: 72,
-      gk_diving: 15, gk_handling: 12, gk_kicking: 10
-    },
-    {
-      id: 15, player_name: "Sadio Mané",
-      overall_rating: 89, potential: 89, height: "175 cm", weight: "69 kg",
-      finishing: 86, short_passing: 84, dribbling: 89,
-      sprint_speed: 90, acceleration: 91, stamina: 88, strength: 70,
-      gk_diving: 10, gk_handling: 10, gk_kicking: 15
-    },
-    {
-      id: 16, player_name: "Karim Benzema",
-      overall_rating: 91, potential: 91, height: "185 cm", weight: "81 kg",
-      finishing: 90, short_passing: 87, dribbling: 87,
-      sprint_speed: 78, acceleration: 77, stamina: 82, strength: 80,
-      gk_diving: 13, gk_handling: 11, gk_kicking: 5
-    },
-    {
-      id: 17, player_name: "Joshua Kimmich",
-      overall_rating: 89, potential: 90, height: "177 cm", weight: "75 kg",
-      finishing: 68, short_passing: 87, dribbling: 83,
-      sprint_speed: 65, acceleration: 77, stamina: 94, strength: 68,
-      gk_diving: 8, gk_handling: 15, gk_kicking: 15
-    },
-    {
-      id: 18, player_name: "Son Heung-min",
-      overall_rating: 89, potential: 89, height: "183 cm", weight: "78 kg",
-      finishing: 89, short_passing: 84, dribbling: 87,
-      sprint_speed: 90, acceleration: 86, stamina: 88, strength: 64,
-      gk_diving: 11, gk_handling: 13, gk_kicking: 13
-    },
-    {
-      id: 19, player_name: "Alisson",
-      overall_rating: 89, potential: 90, height: "191 cm", weight: "91 kg",
-      finishing: 20, short_passing: 60, dribbling: 22,
-      sprint_speed: 40, acceleration: 45, stamina: 32, strength: 78,
-      gk_diving: 86, gk_handling: 85, gk_kicking: 85
-    },
-    {
-      id: 20, player_name: "Casemiro",
-      overall_rating: 89, potential: 89, height: "185 cm", weight: "84 kg",
-      finishing: 65, short_passing: 84, dribbling: 73,
-      sprint_speed: 62, acceleration: 60, stamina: 90, strength: 90,
-      gk_diving: 13, gk_handling: 14, gk_kicking: 16
-    },
-    {
-      id: 21, player_name: "Ederson",
-      overall_rating: 89, potential: 91, height: "188 cm", weight: "86 kg",
-      finishing: 15, short_passing: 61, dribbling: 23,
-      sprint_speed: 50, acceleration: 53, stamina: 40, strength: 78,
-      gk_diving: 87, gk_handling: 82, gk_kicking: 93
-    },
-    {
-      id: 22, player_name: "Raheem Sterling",
-      overall_rating: 87, potential: 88, height: "170 cm", weight: "69 kg",
-      finishing: 85, short_passing: 80, dribbling: 88,
-      sprint_speed: 90, acceleration: 94, stamina: 79, strength: 65,
-      gk_diving: 15, gk_handling: 12, gk_kicking: 12
-    },
-    {
-      id: 23, player_name: "Toni Kroos",
-      overall_rating: 88, potential: 88, height: "183 cm", weight: "76 kg",
-      finishing: 80, short_passing: 93, dribbling: 80,
-      sprint_speed: 52, acceleration: 55, stamina: 74, strength: 70,
-      gk_diving: 10, gk_handling: 11, gk_kicking: 13
-    },
-    {
-      id: 24, player_name: "Ruben Dias",
-      overall_rating: 88, potential: 91, height: "187 cm", weight: "82 kg",
-      finishing: 28, short_passing: 80, dribbling: 68,
-      sprint_speed: 68, acceleration: 58, stamina: 85, strength: 89,
-      gk_diving: 15, gk_handling: 8, gk_kicking: 15
-    },
-    {
-      id: 25, player_name: "Trent Alexander-Arnold",
-      overall_rating: 87, potential: 90, height: "175 cm", weight: "69 kg",
-      finishing: 60, short_passing: 88, dribbling: 79,
-      sprint_speed: 79, acceleration: 77, stamina: 88, strength: 63,
-      gk_diving: 14, gk_handling: 15, gk_kicking: 14
+
+    finishing: (p) => p.finishing ?? "N/A",
+    short_passing: (p) => p.short_passing ?? "N/A",
+    dribbling: (p) => p.dribbling ?? "N/A",
+
+    sprint_speed: (p) => p.sprint_speed ?? "N/A",
+    acceleration: (p) => p.acceleration ?? "N/A",
+    stamina: (p) => p.stamina ?? "N/A",
+    strength: (p) => p.strength ?? "N/A",
+
+    gk_diving: (p) => p.gk_diving ?? "N/A",
+    gk_handling: (p) => p.gk_handling ?? "N/A",
+    gk_kicking: (p) => p.gk_kicking ?? "N/A",
+  };
+
+  const statKeys = Object.keys(statRenderers);
+
+  // 6. --- API HELPERS ---
+
+  async function fetchPlayerSuggestions(term) {
+    if (!term || term.length < 2) return [];
+
+    try {
+      const url = `/api/players?search=${encodeURIComponent(term)}&limit=10`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Failed to fetch player suggestions");
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      console.error(err);
+      return [];
     }
-  ];
+  }
 
-  // 5. --- GET ELEMENTS ---
-  const player1Select = document.getElementById("player1-select");
-  const player2Select = document.getElementById("player2-select");
+  async function fetchPlayerDetails(id) {
+    try {
+      const res = await fetch(`/api/players/${id}`);
+      if (!res.ok) throw new Error("Failed to fetch player details");
+      const data = await res.json();
+      console.log('Player details fetched:', data); // Debug log
+      return data;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  }
 
-  // 6. --- POPULATE DROPDOWNS ---
-  mockPlayerDatabase.forEach(player => {
-    // Add to Player 1 list
-    const option1 = document.createElement("option");
-    option1.value = player.id;
-    option1.textContent = player.player_name;
-    player1Select.appendChild(option1);
+  // 7. --- AUTOCOMPLETE RENDERING ---
 
-    // Add to Player 2 list
-    const option2 = document.createElement("option");
-    option2.value = player.id;
-    option2.textContent = player.player_name;
-    player2Select.appendChild(option2);
-  });
+  function renderSuggestions(side, players) {
+    const inputEl = side === "player1" ? player1Input : player2Input;
+    const suggestionsEl = side === "player1" ? player1Suggestions : player2Suggestions;
 
-  // 7. --- SET DEFAULTS ---
-  player1Select.value = mockPlayerDatabase[0].id; // Messi
-  player2Select.value = mockPlayerDatabase[1].id; // Ronaldo
+    suggestionsEl.innerHTML = "";
+    if (!players.length) return;
 
-  // 8. --- COMPARISON LOGIC ---
+    players.forEach((player) => {
+      const item = document.createElement("div");
+      item.className = "suggestion-item";
+      item.textContent = player.player_name;
 
-  // List of all stat IDs to update
-  const statIds = [
-    "overall_rating", "potential", "height", "weight",
-    "finishing", "short_passing", "dribbling",
-    "sprint_speed", "acceleration", "stamina", "strength",
-    "gk_diving", "gk_handling", "gk_kicking"
-  ];
+      item.addEventListener("click", async () => {
+        console.log('Clicked player:', player); // Debug log
+        
+        inputEl.value = player.player_name;
+        suggestionsEl.innerHTML = "";
+
+        const details = await fetchPlayerDetails(player.id);
+        console.log('Player details after click:', details); // Debug log
+        
+        if (!details) {
+          console.error('No details found for player:', player.id);
+          return;
+        }
+
+        if (side === "player1") {
+          if (selectedPlayer2 && selectedPlayer2.id === details.id) {
+            alert("That player is already selected on the right side.");
+            return;
+          }
+          selectedPlayer1 = details;
+        } else {
+          if (selectedPlayer1 && selectedPlayer1.id === details.id) {
+            alert("That player is already selected on the left side.");
+            return;
+          }
+          selectedPlayer2 = details;
+        }
+
+        updateComparison();
+      });
+
+      suggestionsEl.appendChild(item);
+    });
+  }
+
+  function setupSearchInput(side) {
+    const inputEl = side === "player1" ? player1Input : player2Input;
+    const suggestionsEl = side === "player1" ? player1Suggestions : player2Suggestions;
+
+    let timeoutId = null;
+
+    inputEl.addEventListener("input", () => {
+      const term = inputEl.value.trim();
+      clearTimeout(timeoutId);
+
+      if (term.length < 2) {
+        suggestionsEl.innerHTML = "";
+        return;
+      }
+
+      timeoutId = setTimeout(async () => {
+        const players = await fetchPlayerSuggestions(term);
+        renderSuggestions(side, players);
+      }, 250);
+    });
+
+    // Close suggestions when input loses focus
+    inputEl.addEventListener("blur", () => {
+      setTimeout(() => {
+        suggestionsEl.innerHTML = "";
+      }, 200);
+    });
+
+    // Allow pressing Enter to select first suggestion
+    inputEl.addEventListener("keydown", async (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const firstSuggestion = suggestionsEl.querySelector('.suggestion-item');
+        if (firstSuggestion) {
+          firstSuggestion.click();
+        }
+      }
+    });
+  }
+
+  // 8. --- UPDATE TABLE ---
 
   function updateComparison() {
-    const p1Id = player1Select.value;
-    const p2Id = player2Select.value;
+    console.log('Updating comparison:', { selectedPlayer1, selectedPlayer2 }); // Debug log
+    
+    statKeys.forEach((stat) => {
+      const p1Cell = document.getElementById(`p1-${stat}`);
+      const p2Cell = document.getElementById(`p2-${stat}`);
 
-    const p1Data = mockPlayerDatabase.find(p => p.id == p1Id);
-    const p2Data = mockPlayerDatabase.find(p => p.id == p2Id);
+      if (p1Cell) {
+        p1Cell.textContent = selectedPlayer1 ? statRenderers[stat](selectedPlayer1) : "...";
+        // Add visual comparison (highlight higher values)
+        if (selectedPlayer1 && selectedPlayer2) {
+          const val1 = parseFloat(selectedPlayer1[stat]) || 0;
+          const val2 = parseFloat(selectedPlayer2[stat]) || 0;
+          p1Cell.className = val1 > val2 ? 'higher-value' : (val1 < val2 ? 'lower-value' : '');
+        } else {
+          p1Cell.className = '';
+        }
+      }
 
-    if (!p1Data || !p2Data) return;
-
-    // Loop and update all stats for Player 1
-    statIds.forEach(stat => {
-      const el = document.getElementById(`p1-${stat}`);
-      if (el) el.textContent = p1Data[stat] ?? "N/A";
-    });
-
-    // Loop and update all stats for Player 2
-    statIds.forEach(stat => {
-      const el = document.getElementById(`p2-${stat}`);
-      if (el) el.textContent = p2Data[stat] ?? "N/A";
+      if (p2Cell) {
+        p2Cell.textContent = selectedPlayer2 ? statRenderers[stat](selectedPlayer2) : "...";
+        // Add visual comparison (highlight higher values)
+        if (selectedPlayer1 && selectedPlayer2) {
+          const val1 = parseFloat(selectedPlayer1[stat]) || 0;
+          const val2 = parseFloat(selectedPlayer2[stat]) || 0;
+          p2Cell.className = val2 > val1 ? 'higher-value' : (val2 < val1 ? 'lower-value' : '');
+        } else {
+          p2Cell.className = '';
+        }
+      }
     });
   }
 
-  // This function enforces the "no same player" rule
-  function syncDropdowns(changedSelect) {
-    const p1Id = player1Select.value;
-    const p2Id = player2Select.value;
+  // 9. --- DEFAULT PLAYERS ---
 
-    if (changedSelect === "player1") {
-      // Disable the selected P1 option in the P2 list
-      Array.from(player2Select.options).forEach(option => {
-        option.disabled = (option.value === p1Id);
-      });
-    } else if (changedSelect === "player2") {
-      // Disable the selected P2 option in the P1 list
-      Array.from(player1Select.options).forEach(option => {
-        option.disabled = (option.value === p2Id);
-      });
+  async function loadDefaultPlayers() {
+    try {
+      // Try to find some players in the database
+      const [popularPlayers] = await Promise.all([
+        fetchPlayerSuggestions("a") // Get first 10 players
+      ]);
+
+      if (popularPlayers.length >= 2) {
+        // Use first two players as defaults
+        player1Input.value = popularPlayers[0].player_name;
+        selectedPlayer1 = await fetchPlayerDetails(popularPlayers[0].id);
+        
+        player2Input.value = popularPlayers[1].player_name;
+        selectedPlayer2 = await fetchPlayerDetails(popularPlayers[1].id);
+      }
+
+      updateComparison();
+    } catch (err) {
+      console.error("Error loading default players:", err);
     }
   }
 
-  // 9. --- ADD EVENT LISTENERS ---
-  player1Select.addEventListener("change", () => {
-    syncDropdowns("player1");
-    updateComparison();
-  });
+  // 10. --- INIT ---
 
-  player2Select.addEventListener("change", () => {
-    syncDropdowns("player2");
-    updateComparison();
-  });
-
-  // 10. --- INITIAL LOAD ---
-  syncDropdowns("player1");
-  syncDropdowns("player2");
-  updateComparison();
-
+  setupSearchInput("player1");
+  setupSearchInput("player2");
+  loadDefaultPlayers();
 });

@@ -61,16 +61,35 @@
       <div class="content-card">
         <table class="data-table comparison-table">
           <thead>
-            <tr>
-              <th>Statistic</th>
-              <th>
-                <select id="player1-select" class="comparison-select"></select>
-              </th>
-              <th>
-                <select id="player2-select" class="comparison-select"></select>
-              </th>
-            </tr>
+          <tr>
+            <th>Players:</th>
+            <th>
+              <div class="player-search-wrapper">
+                <input
+                        type="text"
+                        id="player1-search"
+                        class="comparison-input"
+                        placeholder="Search player 1..."
+                        autocomplete="off"
+                />
+                <div id="player1-suggestions" class="suggestions-list"></div>
+              </div>
+            </th>
+            <th>
+              <div class="player-search-wrapper">
+                <input
+                        type="text"
+                        id="player2-search"
+                        class="comparison-input"
+                        placeholder="Search player 2..."
+                        autocomplete="off"
+                />
+                <div id="player2-suggestions" class="suggestions-list"></div>
+              </div>
+            </th>
+          </tr>
           </thead>
+
           <tbody>
             <tr class="stat-category">
               <td colspan="3">General</td>
