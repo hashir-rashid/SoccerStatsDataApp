@@ -364,6 +364,62 @@ app.get('/api/stats/avg-player-age', (req, res) => {
   });
 });
 
+// Get top goal scorers (using relevant attributes)
+app.get('/api/stats/top-scorers', (req, res) => {
+  const query = `
+    SELECT p.player_name as name, 
+           COALESCE(pa.finishing, 0) as goals,
+           COALESCE(pa.shot_power, 0) as shot_power,
+           COALESCE(pa.long_shots, 0) as long_shots
+    FROM Player p
+    JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id
+    WHERE pa.finishing IS NOT NULL 
+      AND pa.shot_power IS NOT NULL
+      AND pa.long_shots IS NOT NULL
+    GROUP BY p.player_api_id
+    ORDER BY (pa.finishing + pa.shot_power + pa.long_shots) DESC
+    LIMIT 10
+  `;
+  
+  sportsDb.all(query, [], (err, rows) => {
+    if (err) {
+      console.error('Error fetching top scorers:', err);
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json(rows);
+  });
+});
+
+// Get top playmakers (using passing and vision attributes)
+app.get('/api/stats/top-playmakers', (req, res) => {
+  const query = `
+    SELECT p.player_name as name, 
+           COALESCE(pa.vision, 0) as vision,
+           COALESCE(pa.short_passing, 0) as short_passing,
+           COALESCE(pa.long_passing, 0) as long_passing,
+           COALESCE(pa.crossing, 0) as crossing
+    FROM Player p
+    JOIN Player_Attributes pa ON p.player_api_id = pa.player_api_id
+    WHERE pa.vision IS NOT NULL 
+      AND pa.short_passing IS NOT NULL
+      AND pa.long_passing IS NOT NULL
+      AND pa.crossing IS NOT NULL
+    GROUP BY p.player_api_id
+    ORDER BY (pa.vision + pa.short_passing + pa.long_passing + pa.crossing) DESC
+    LIMIT 10
+  `;
+  
+  sportsDb.all(query, [], (err, rows) => {
+    if (err) {
+      console.error('Error fetching top playmakers:', err);
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json(rows);
+  });
+});
+
 // SPA catch-all handler
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dashboard.html'));

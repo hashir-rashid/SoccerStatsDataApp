@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Sports Analytics</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -76,46 +77,29 @@
           <p class="stat-value">N/A</p>
         </div>
       </div>
+
+      <h2 class="section-title">Season Leaders</h2>
+      <div class="stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
+        
+        <div class="stat-card">
+          <h3 class="stat-title" style="font-size: 1.1rem; font-weight: 600; color: #000; margin-bottom: 1.5rem;">Top Goal Scorers based on Shot Power</h3>
+          <div style="height: 250px; width: 100%;">
+            <canvas id="goalsChart"></canvas>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <h3 class="stat-title" style="font-size: 1.1rem; font-weight: 600; color: #000; margin-bottom: 1.5rem;">Top Playmakers based on Vision</h3>
+          <div style="height: 250px; width: 100%;">
+            <canvas id="assistsChart"></canvas>
+          </div>
+        </div>
+
+      </div>
     </main>
 
   </div>
 
   <script src="js/dashboard.js"></script>
-
-  <!-- Data test -->
-  <!-- <script>
-    // Load players
-    async function loadPlayers(limit = 100) {  // Default to 100 if not specified
-      try {
-        const response = await fetch(`/api/players?limit=${limit}`);
-        const players = await response.json();
-        displayPlayers(players);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
-
-    // Display players in console
-    function displayPlayers(players) {
-      console.log('=== PLAYERS LIST ===');
-      players.forEach(player => {
-        console.log(`ID: ${player.id} | Name: ${player.player_name} | Birthday: ${player.birthday}`);
-      });
-      console.log(`Total players: ${players.length}`);
-    }
-
-    // Search players
-    async function searchPlayers(searchTerm) {
-      const response = await fetch(`/api/search/${encodeURIComponent(searchTerm)}`);
-      const results = await response.json();
-      return results;
-    }
-
-    // Get player details
-    async function getPlayerDetails(playerId) {
-      const response = await fetch(`/api/players/${playerId}`);
-      return await response.json();
-    }
-  </script> -->
 </body>
 </html>
