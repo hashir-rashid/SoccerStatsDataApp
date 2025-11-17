@@ -187,6 +187,84 @@ app.get('/api/search/:term', (req, res) => {
   });
 });
 
+// Get total player count
+app.get('/api/stats/players/count', (req, res) => {
+  const query = `SELECT COUNT(*) as count FROM Player`;
+  
+  sportsDb.get(query, [], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({ count: row.count });
+  });
+});
+
+// Get total team count
+app.get('/api/stats/teams/count', (req, res) => {
+  const query = `SELECT COUNT(*) as count FROM Team`;
+  
+    sportsDb.get(query, [], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({ count: row.count });
+  });
+});
+
+// Get total league count
+app.get('/api/stats/leagues/count', (req, res) => {
+  const query = `SELECT COUNT(*) as count FROM League`;
+  
+    sportsDb.get(query, [], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({ count: row.count });
+  });
+});
+
+// Get all dashboard stats in one call
+app.get('/api/stats/dashboard', (req, res) => {
+  const queries = [
+    { key: 'players', query: 'SELECT COUNT(*) as count FROM Player' },
+    { key: 'teams', query: 'SELECT COUNT(*) as count FROM Team' },
+    { key: 'leagues', query: 'SELECT COUNT(*) as count FROM League' },
+    { key: 'playerAttributes', query: 'SELECT COUNT(*) as count FROM Player_Attributes' },
+    { key: 'teamAttributes', query: 'SELECT COUNT(*) as count FROM Team_Attributes' },
+    { key: 'countries', query: 'SELECT COUNT(*) as count FROM Country' }
+  ];
+
+  const results = {};
+  let completed = 0;
+
+  queries.forEach(({ key, query }) => {
+    sportsDb.get(query, [], (err, row) => {
+      if (err) {
+        results[key] = 0;
+      } else {
+        results[key] = row.count;
+      }
+      completed++;
+      
+      if (completed === queries.length) {
+        // Sum all records across all tables for total data points
+        results.dataPoints = 
+          results.players +
+          results.teams + 
+          results.leagues +
+          results.playerAttributes +
+          results.teamAttributes +
+          results.countries;
+        
+        res.json(results);
+      }
+    });
+  });
+});
+
 // SPA catch-all handler
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dashboard.html'));

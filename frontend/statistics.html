@@ -66,7 +66,7 @@
                   <div class="adv-stat-meta">35 goals</div>
               </div>
               <div class="adv-stat-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V22"></path><path d="M14 14.66V22"></path><path d="M17.5 8.9c0 .4-.2 1.1-.6 1.1-.4 0-1.6-.8-1.6-2.2 0-1.6 1.2-2.8 1.6-2.8.4 0 .6.7.6 1.1Z"></path><path d="M6.5 8.9c0 .4.2 1.1.6 1.1.4 0 1.6-.8 1.6-2.2 0-1.6-1.2-2.8-1.6-2.8-.4 0-.6.7-.6 1.1Z"></path><path d="M12 2C7 2 7 9 7 9c0 3 1.5 6 5 6s5-3 5-6c0 0 0-7-5-7Z"></path></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V22"></path><path d="M14 14.66V22"></path><path d="M17.5 8.9c0 .4-.2 1.1-.6 1.1-.4 0-1.6-.8-1.6-2.2 0-1.6 1.2-2.8 1.6-2.8.4 0 .6.7.6 1.1Z"></path><path d="M6.5 8.9c0 .4.2 1.1-.6 1.1.4 0 1.6-.8 1.6-2.2 0-1.6-1.2-2.8-1.6-2.8-.4 0-.6.7-.6 1.1Z"></path><path d="M12 2C7 2 7 9 7 9c0 3 1.5 6 5 6s5-3 5-6c0 0 0-7-5-7Z"></path></svg>
               </div>
           </div>
           <div class="adv-stat-card">
@@ -101,34 +101,179 @@
           </div>
       </div>
 
-      <h2 class="section-title">Player Statistics (Top Scorers)</h2>
+      <h2 class="section-title">Player Progression </h2>
       <div class="content-card">
         <table class="data-table">
           <thead>
             <tr>
-              <th>Rank</th>
-              <th>Player Name</th>
-              <th>Team</th>
-              <th>Points Per Game</th>
+              <th>Rank</th> <th>Player Name</th>
+              <th>First Date</th>
+              <th>First Rating</th>
+              <th>Latest Date</th>
+              <th>Latest Rating</th>
+              <th>Improvement</th>
             </tr>
           </thead>
-          <tbody id="player-stats-table-body">
+          <tbody id="view1-table-body">
             </tbody>
         </table>
       </div>
 
-      <h2 class="section-title">Team Standings</h2>
+      <h2 class="section-title">High Rated Players by Foot </h2>
       <div class="content-card">
         <table class="data-table">
           <thead>
             <tr>
-              <th>Rank</th>
-              <th>Team Name</th>
-              <th>Wins</th>
-              <th>Losses</th>
+              <th>Preferred Foot</th>
+              <th>Avg Rating</th>
+              <th>Player Count</th>
+              <th>Max Rating</th>
             </tr>
           </thead>
-          <tbody id="team-stats-table-body">
+          <tbody id="view2-table-body">
+            </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title">Player Peak Attributes </h2>
+      <div class="content-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Rank</th> <th>Player Name</th>
+              <th>Date</th>
+              <th>Overall Rating</th>
+              <th>Potential</th>
+              <th>Finishing</th>
+              <th>Short Passing</th>
+              <th>Dribbling</th>
+            </tr>
+          </thead>
+          <tbody id="view3-table-body">
+            </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title">Player Attributes </h2>
+      <div class="content-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Player Name</th>
+              <th>Birthday</th>
+              <th>Date</th>
+              <th>Overall Rating</th>
+              <th>Potential</th>
+            </tr>
+          </thead>
+          <tbody id="view4-table-body">
+            </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title">Low-Rated/Potential Players </h2>
+      <div class="content-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Rank</th> <th>Player Name</th>
+              <th>Overall Rating</th>
+              <th>Potential</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody id="view5-table-body">
+            </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title">Current Player Ratings </h2>
+      <div class="content-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Rank</th> <th>Player Name</th>
+              <th>Date</th>
+              <th>Overall Rating</th>
+              <th>Potential</th>
+              <th>Preferred Foot</th>
+              <th>Attacking Work Rate</th>
+            </tr>
+          </thead>
+          <tbody id="view6-table-body">
+            </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title">Player Physical Profile </h2>
+      <div class="content-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Player Name</th>
+              <th>Height</th>
+              <th>Weight</th>
+              <th>Stamina</th>
+              <th>Strength</th>
+              <th>Jumping</th>
+              <th>Acceleration</th>
+              <th>Sprint Speed</th>
+            </tr>
+          </thead>
+          <tbody id="view7-table-body">
+            </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title">Player Speed Metrics </h2>
+      <div class="content-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Rank</th> <th>Player Name</th>
+              <th>Height</th>
+              <th>Avg Sprint Speed</th>
+              <th>Avg Acceleration</th>
+              <th>Avg Agility</th>
+              <th>Avg Balance</th>
+            </tr>
+          </thead>
+          <tbody id="view8-table-body">
+            </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title">Goalkeeper Rankings </h2>
+      <div class="content-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Rank</th> <th>Player Name</th>
+              <th>Avg GK Diving</th>
+              <th>Avg GK Handling</th>
+              <th>Avg GK Kicking</th>
+              <th>Avg GK Positioning</th>
+              <th>Avg GK Reflexes</th>
+              <th>Avg Overall Rating</th>
+            </tr>
+          </thead>
+          <tbody id="view9-table-body">
+            </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title">League Country Overview </h2>
+      <div class="content-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Country Name</th>
+              <th>League Name</th>
+              <th>League ID</th>
+              <th>Country ID</th>
+            </tr>
+          </thead>
+          <tbody id="view10-table-body">
             </tbody>
         </table>
       </div>
