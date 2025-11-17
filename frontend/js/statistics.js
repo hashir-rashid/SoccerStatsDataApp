@@ -1,11 +1,16 @@
-// statistics.js
+const formatDate = (dateString) => {
+  if (!dateString || !dateString.includes(" ")) {
+    return dateString;
+  }
+  return dateString.split(" ")[0];
+};
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   
   // 1. --- AUTHENTICATION CHECK ---
   if (localStorage.getItem("isAuthenticated") !== "true") {
     alert("You must be logged in to view this page.");
-    window.location.href = "/login.html";
+    window.location.href = "login.html";
     return;
   }
 
@@ -21,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   logoutButton.addEventListener("click", () => {
     localStorage.clear();
-    window.location.href = "/login.html";
+    window.location.href = "login.html";
   });
   
   // 3. --- SET ACTIVE NAV LINK ---
@@ -35,16 +40,108 @@ document.addEventListener("DOMContentLoaded", () => {
     statisticsLink.classList.add("active");
   }
 
-  // 4. --- RENDER MOCK DATA FOR 10 VIEWS (FROM PDF) ---
+  // 4. --- LOAD REAL DATA FOR TOP CARDS FROM DATABASE ---
+  await loadTopCardsData();
 
-  // Helper function to format date strings
-  const formatDate = (dateString) => {
-    if (!dateString || !dateString.includes(" ")) {
-      return dateString;
+  // 5. --- RENDER MOCK DATA FOR 10 VIEWS ---
+  renderMockDataViews();
+});
+
+async function loadTopCardsData() {
+  try {
+    console.log('Starting to load top cards data...');
+
+    const endpoints = [
+      '/api/stats/top-player',
+      '/api/stats/highest-potential',
+      '/api/stats/avg-player-age', 
+      '/api/stats/avg-rating'
+    ];
+
+    // Check each endpoint individually with better error handling
+    const responses = await Promise.all(
+      endpoints.map(async (endpoint) => {
+        try {
+          console.log(`Fetching: ${endpoint}`);
+          const response = await fetch(endpoint);
+          
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status} for ${endpoint}`);
+          }
+          
+          // Check if response is JSON
+          const contentType = response.headers.get('content-type');
+          if (!contentType || !contentType.includes('application/json')) {
+            throw new Error(`Expected JSON but got ${contentType} for ${endpoint}`);
+          }
+          
+          const data = await response.json();
+          return { success: true, data, endpoint };
+        } catch (error) {
+          console.error(`Failed to fetch ${endpoint}:`, error);
+          return { success: false, error: error.message, endpoint };
+        }
+      })
+    );
+
+    console.log('All API responses:', responses);
+
+    // Process successful responses
+    const successfulResponses = responses.filter(r => r.success);
+    
+    if (successfulResponses.length === 0) {
+      throw new Error('All API calls failed');
     }
-    return dateString.split(" ")[0];
-  };
 
+    // Extract data from successful responses
+    const topPlayer = successfulResponses.find(r => r.endpoint === '/api/stats/top-player')?.data || { name: 'N/A', overall_rating: 0 };
+    const highestPotential = successfulResponses.find(r => r.endpoint === '/api/stats/highest-potential')?.data || { name: 'N/A', potential: 0 };
+    const avgAge = successfulResponses.find(r => r.endpoint === '/api/stats/avg-player-age')?.data || { avg_age: 0 };
+    const avgRating = successfulResponses.find(r => r.endpoint === '/api/stats/avg-rating')?.data || { avg_rating: 0 };
+
+    console.log('Processed data:', { topPlayer, highestPotential, avgAge, avgRating });
+
+    // Update the top cards with real data
+    updateTopCard('Top Rated Player', topPlayer.name || 'No data', `${topPlayer.overall_rating || 0} rating`, 'Player');
+    updateTopCard('Highest Potential', highestPotential.name || 'No data', `${highestPotential.potential || 0} potential`, 'Player');
+    updateTopCard('Avg Player Age', Math.round(avgAge.avg_age || 0) + ' years', 'Across all players', 'Age');
+    updateTopCard('Avg Player Rating', (avgRating.avg_rating || 0).toFixed(1), 'Across all players', 'Rating');
+
+  } catch (error) {
+    console.error('Error loading top cards data:', error);
+    // Fallback to placeholder values
+    setPlaceholderTopCards();
+  }
+}
+
+function updateTopCard(title, value, meta, type) {
+  const cards = document.querySelectorAll('.adv-stat-card');
+  cards.forEach(card => {
+    const titleElement = card.querySelector('.adv-stat-title');
+    if (titleElement && titleElement.textContent === title) {
+      // Find and update the main value display
+      // Try both possible selectors
+      const valueName = card.querySelector('.adv-stat-value-name');
+      const valueNum = card.querySelector('.adv-stat-value-num');
+      
+      if (valueName) valueName.textContent = value;
+      if (valueNum) valueNum.textContent = value;
+      
+      // Update meta text
+      const metaElement = card.querySelector('.adv-stat-meta');
+      if (metaElement) metaElement.textContent = meta;
+    }
+  });
+}
+
+function setPlaceholderTopCards() {
+  updateTopCard('Top Rated Player', 'N/A', 'Data unavailable', 'Player');
+  updateTopCard('Highest Potential', 'N/A', 'Data unavailable', 'Player');
+  updateTopCard('Avg Player Age', 'N/A', 'Data unavailable', 'Age');
+  updateTopCard('Avg Player Rating', 'N/A', 'Data unavailable', 'Rating');
+}
+
+function renderMockDataViews() {
   // --- View 1: Player Progression (view_player_progression) ---
   const mockView1 = [
     { name: "Aaron Appindangoye", first_date: "2007-02-22 00:00:00", first_rating: 61, latest_date: "2016-02-18 00:00:00", latest_rating: 67, improvement: 6 },
@@ -319,5 +416,4 @@ document.addEventListener("DOMContentLoaded", () => {
       </tr>`;
     });
   }
-  
-});
+}
