@@ -232,14 +232,16 @@ app.get('/api/stats/dashboard', (req, res) => {
     { key: 'players', query: 'SELECT COUNT(*) as count FROM Player' },
     { key: 'teams', query: 'SELECT COUNT(*) as count FROM Team' },
     { key: 'leagues', query: 'SELECT COUNT(*) as count FROM League' },
-    { key: 'playerAttributes', query: 'SELECT COUNT(*) as count FROM Player_Attributes' }
+    { key: 'playerAttributes', query: 'SELECT COUNT(*) as count FROM Player_Attributes' },
+    { key: 'teamAttributes', query: 'SELECT COUNT(*) as count FROM Team_Attributes' },
+    { key: 'countries', query: 'SELECT COUNT(*) as count FROM Country' }
   ];
 
   const results = {};
   let completed = 0;
 
   queries.forEach(({ key, query }) => {
-      sportsDb.get(query, [], (err, row) => {
+    sportsDb.get(query, [], (err, row) => {
       if (err) {
         results[key] = 0;
       } else {
@@ -248,8 +250,15 @@ app.get('/api/stats/dashboard', (req, res) => {
       completed++;
       
       if (completed === queries.length) {
-        // Calculate data points (rough estimate)
-        results.dataPoints = results.playerAttributes * 10; // Adjust multiplier as needed
+        // Sum all records across all tables for total data points
+        results.dataPoints = 
+          results.players +
+          results.teams + 
+          results.leagues +
+          results.playerAttributes +
+          results.teamAttributes +
+          results.countries;
+        
         res.json(results);
       }
     });
