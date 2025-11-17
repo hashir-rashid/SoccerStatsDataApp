@@ -196,7 +196,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 8. --- UPDATE TABLE ---
-
   function updateComparison() {
     console.log('Updating comparison:', { selectedPlayer1, selectedPlayer2 }); // Debug log
     
@@ -231,7 +230,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 9. --- DEFAULT PLAYERS ---
-
   async function loadDefaultPlayers() {
     try {
       // Try to find some players in the database
@@ -255,7 +253,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 10 --- CHART ---
-
   function updateChart(p1, p2) {
     if (p1 == null || p2 == null) {return;}
 
@@ -310,8 +307,179 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 11. --- INIT ---
+  // 12. --- EXPORT FUNCTIONALITY ---
+  const exportCsvButton = document.getElementById("export-csv");
+  const exportPdfButton = document.getElementById("export-pdf");
 
+  if (exportCsvButton) {
+    exportCsvButton.addEventListener("click", exportComparisonToCSV);
+  }
+
+  if (exportPdfButton) {
+    exportPdfButton.addEventListener("click", exportComparisonToPDF);
+  }
+
+  function exportComparisonToCSV() {
+    if (!selectedPlayer1 || !selectedPlayer2) {
+      alert("Please select both players to export comparison");
+      return;
+    }
+
+    // Create CSV content
+    const headers = ["Statistic", selectedPlayer1.player_name, selectedPlayer2.player_name];
+    const rows = [
+      ["Overall Rating", selectedPlayer1.overall_rating || "N/A", selectedPlayer2.overall_rating || "N/A"],
+      ["Potential", selectedPlayer1.potential || "N/A", selectedPlayer2.potential || "N/A"],
+      ["Height", `${Math.round(selectedPlayer1.height) || "N/A"} cm`, `${Math.round(selectedPlayer2.height) || "N/A"} cm`],
+      ["Weight", `${Math.round((selectedPlayer1.weight || 0) * 0.453592) || "N/A"} kg`, `${Math.round((selectedPlayer2.weight || 0) * 0.453592) || "N/A"} kg`],
+      [],
+      ["Finishing", selectedPlayer1.finishing || "N/A", selectedPlayer2.finishing || "N/A"],
+      ["Short Passing", selectedPlayer1.short_passing || "N/A", selectedPlayer2.short_passing || "N/A"],
+      ["Dribbling", selectedPlayer1.dribbling || "N/A", selectedPlayer2.dribbling || "N/A"],
+      [],
+      ["Sprint Speed", selectedPlayer1.sprint_speed || "N/A", selectedPlayer2.sprint_speed || "N/A"],
+      ["Acceleration", selectedPlayer1.acceleration || "N/A", selectedPlayer2.acceleration || "N/A"],
+      ["Stamina", selectedPlayer1.stamina || "N/A", selectedPlayer2.stamina || "N/A"],
+      ["Strength", selectedPlayer1.strength || "N/A", selectedPlayer2.strength || "N/A"],
+      [],
+      ["GK Diving", selectedPlayer1.gk_diving || "N/A", selectedPlayer2.gk_diving || "N/A"],
+      ["GK Handling", selectedPlayer1.gk_handling || "N/A", selectedPlayer2.gk_handling || "N/A"],
+      ["GK Kicking", selectedPlayer1.gk_kicking || "N/A", selectedPlayer2.gk_kicking || "N/A"]
+    ];
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(","))
+    ].join("\n");
+
+    // Create and download file
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `player_comparison_${selectedPlayer1.player_name}_vs_${selectedPlayer2.player_name}_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function exportComparisonToPDF() {
+    if (!selectedPlayer1 || !selectedPlayer2) {
+      alert("Please select both players to export comparison");
+      return;
+    }
+
+    // Create a simple PDF using window.print() with custom styles
+    const printWindow = window.open('', '_blank');
+    const printContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Player Comparison Export</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          h1 { color: #333; border-bottom: 2px solid #333; padding-bottom: 10px; }
+          .comparison-header { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 20px; 
+            background: #f5f5f5; 
+            padding: 15px; 
+            border-radius: 5px;
+          }
+          .player-card { text-align: center; flex: 1; }
+          .player-name { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; }
+          .vs { align-self: center; font-weight: bold; color: #666; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          th { background-color: #f5f5f5; font-weight: bold; }
+          .stat-category { background-color: #e9ecef; font-weight: bold; }
+          .higher-value { background-color: #d4edda; }
+          .export-info { margin-bottom: 20px; color: #666; font-size: 0.9em; }
+        </style>
+      </head>
+      <body>
+        <h1>Player Comparison Report</h1>
+        <div class="export-info">
+          <p>Generated on: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
+        </div>
+        
+        <div class="comparison-header">
+          <div class="player-card">
+            <div class="player-name">${selectedPlayer1.player_name}</div>
+          </div>
+          <div class="vs">VS</div>
+          <div class="player-card">
+            <div class="player-name">${selectedPlayer2.player_name}</div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Statistic</th>
+              <th>${selectedPlayer1.player_name}</th>
+              <th>${selectedPlayer2.player_name}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="stat-category">
+              <td colspan="3">General</td>
+            </tr>
+            ${createComparisonRow("Overall Rating", selectedPlayer1.overall_rating, selectedPlayer2.overall_rating)}
+            ${createComparisonRow("Potential", selectedPlayer1.potential, selectedPlayer2.potential)}
+            ${createComparisonRow("Height", selectedPlayer1.height ? Math.round(selectedPlayer1.height) + " cm" : "N/A", selectedPlayer2.height ? Math.round(selectedPlayer2.height) + " cm" : "N/A")}
+            ${createComparisonRow("Weight", selectedPlayer1.weight ? Math.round(selectedPlayer1.weight * 0.453592) + " kg" : "N/A", selectedPlayer2.weight ? Math.round(selectedPlayer2.weight * 0.453592) + " kg" : "N/A")}
+            
+            <tr class="stat-category">
+              <td colspan="3">Attacking</td>
+            </tr>
+            ${createComparisonRow("Finishing", selectedPlayer1.finishing, selectedPlayer2.finishing)}
+            ${createComparisonRow("Short Passing", selectedPlayer1.short_passing, selectedPlayer2.short_passing)}
+            ${createComparisonRow("Dribbling", selectedPlayer1.dribbling, selectedPlayer2.dribbling)}
+            
+            <tr class="stat-category">
+              <td colspan="3">Physical</td>
+            </tr>
+            ${createComparisonRow("Sprint Speed", selectedPlayer1.sprint_speed, selectedPlayer2.sprint_speed)}
+            ${createComparisonRow("Acceleration", selectedPlayer1.acceleration, selectedPlayer2.acceleration)}
+            ${createComparisonRow("Stamina", selectedPlayer1.stamina, selectedPlayer2.stamina)}
+            ${createComparisonRow("Strength", selectedPlayer1.strength, selectedPlayer2.strength)}
+            
+            <tr class="stat-category">
+              <td colspan="3">Goalkeeping</td>
+            </tr>
+            ${createComparisonRow("GK Diving", selectedPlayer1.gk_diving, selectedPlayer2.gk_diving)}
+            ${createComparisonRow("GK Handling", selectedPlayer1.gk_handling, selectedPlayer2.gk_handling)}
+            ${createComparisonRow("GK Kicking", selectedPlayer1.gk_kicking, selectedPlayer2.gk_kicking)}
+          </tbody>
+        </table>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.print();
+  }
+
+  function createComparisonRow(statName, value1, value2) {
+    const val1 = parseFloat(value1) || 0;
+    const val2 = parseFloat(value2) || 0;
+    const p1Class = val1 > val2 ? 'higher-value' : '';
+    const p2Class = val2 > val1 ? 'higher-value' : '';
+    
+    return `
+      <tr>
+        <td>${statName}</td>
+        <td class="${p1Class}">${value1 || "N/A"}</td>
+        <td class="${p2Class}">${value2 || "N/A"}</td>
+      </tr>
+    `;
+  }
+
+  // 12. --- INIT ---
   setupSearchInput("player1");
   setupSearchInput("player2");
   loadDefaultPlayers();
