@@ -1,12 +1,4 @@
 // CRUD_test.js - Basic CRUD Operations Test
-console.log('🔧 CRUD Test Script Loaded');
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Wait a moment for the page to fully load
-    setTimeout(() => {
-        runCRUDTests();
-    }, 1000);
-});
 
 async function runCRUDTests() {
     console.log('🚀 Starting CRUD Operations Test...');
