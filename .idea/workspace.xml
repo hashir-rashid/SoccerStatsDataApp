@@ -4,175 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7d4c379-737e-40e8-ace5-685b2c31c415" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/database/users_database.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/backend/database/users_database.sqlite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/color-support" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.bin/color-support" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/color-support.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/color-support.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/mime" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.bin/mime" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/mime.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/mime.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/mkdirp" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.bin/mkdirp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/mkdirp.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/mkdirp.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/node-gyp" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.bin/node-gyp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/node-gyp.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/node-gyp.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/node-pre-gyp" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.bin/node-pre-gyp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/node-pre-gyp.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/node-pre-gyp.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/node-which" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.bin/node-which" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/node-which.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/node-which.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/nopt" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.bin/nopt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/nopt.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/nopt.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/prebuild-install" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.bin/prebuild-install" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/prebuild-install.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/prebuild-install.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/rc" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.bin/rc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/rc.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/rc.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/rimraf" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.bin/rimraf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/rimraf.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/rimraf.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/semver" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.bin/semver" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/semver.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.bin/semver.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/bin/node-pre-gyp" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/bin/node-pre-gyp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/are-we-there-yet/LICENSE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/are-we-there-yet/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/are-we-there-yet/lib/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/are-we-there-yet/lib/tracker-base.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/are-we-there-yet/lib/tracker-group.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/are-we-there-yet/lib/tracker-stream.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/are-we-there-yet/lib/tracker.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/are-we-there-yet/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/base-theme.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/error.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/has-color.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/plumbing.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/process.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/progress-bar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/render-template.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/set-immediate.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/set-interval.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/spin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/template-item.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/theme-set.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/themes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/gauge/wide-truncate.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/npmlog/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/npmlog/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/npmlog/log.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/@mapbox/node-pre-gyp/node_modules/npmlog/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/are-we-there-yet/lib/tracker-group.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/are-we-there-yet/lib/tracker-group.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/are-we-there-yet/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/are-we-there-yet/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/appveyor.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/bcrypt/appveyor.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/lib/binding/napi-v3/bcrypt_lib.node" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/bcrypt/lib/binding/napi-v3/bcrypt_lib.node" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/LICENSE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/common.gypi" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/except.gypi" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/napi-inl.deprecated.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/napi-inl.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/napi.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/node_api.gyp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/noexcept.gypi" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/nothing.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/package-support.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/tools/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/tools/check-napi.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/tools/clang-format.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/tools/conversion.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/node_modules/node-addon-api/tools/eslint-format.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/bcrypt/test-docker.sh" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/bcrypt/test-docker.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/color-support/bin.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/color-support/bin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/LICENSE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/gauge/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/base-theme.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/error.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/has-color.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/plumbing.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/process.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/progress-bar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/render-template.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/set-immediate.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/set-interval.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/spin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/template-item.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/theme-set.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/themes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/lib/wide-truncate.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/gauge/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/gauge/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/make-dir/node_modules/.bin/semver" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/make-dir/node_modules/.bin/semver" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/make-dir/node_modules/.bin/semver.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/make-dir/node_modules/.bin/semver.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/make-dir/node_modules/semver/bin/semver.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/make-dir/node_modules/semver/bin/semver.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/mime/cli.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/mime/cli.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/mime/src/build.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/mime/src/build.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/mkdirp/bin/cmd.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/mkdirp/bin/cmd.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-addon-api/LICENSE.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-addon-api/LICENSE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-addon-api/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-addon-api/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-addon-api/common.gypi" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-addon-api/common.gypi" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-addon-api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-addon-api/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-addon-api/napi-inl.h" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-addon-api/napi-inl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-addon-api/napi.h" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-addon-api/napi.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-addon-api/node_addon_api.gyp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-addon-api/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-addon-api/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-addon-api/tools/conversion.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-addon-api/tools/conversion.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-addon-api/tools/eslint-format.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-addon-api/tools/eslint-format.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/bin/node-gyp.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/bin/node-gyp.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/gyp" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/gyp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/gyp.bat" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/gyp.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/gyp_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/gyp_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/MSVSSettings_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/MSVSSettings_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/common_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/common_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/easy_xml_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/easy_xml_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/flock_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/flock_tool.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/generator/msvs_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/generator/msvs_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/input_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/input_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/mac_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/mac_tool.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/win_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/pylib/gyp/win_tool.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/test_gyp.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/test_gyp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/tools/emacs/run-unit-tests.sh" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/tools/emacs/run-unit-tests.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/tools/graphviz.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/tools/graphviz.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/tools/pretty_gyp.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/tools/pretty_gyp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/tools/pretty_sln.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/tools/pretty_sln.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/tools/pretty_vcproj.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/gyp/tools/pretty_vcproj.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/node-gyp/update-gyp.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/node-gyp/update-gyp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/nopt/bin/nopt.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/nopt/bin/nopt.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/npmlog/LICENSE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/npmlog/lib/log.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/npmlog/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/npmlog/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/prebuild-install/bin.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/prebuild-install/bin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/rc/cli.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/rc/cli.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/rc/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/rc/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/rimraf/bin.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/rimraf/bin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/semver/bin/semver.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/semver/bin/semver.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/sqlite3/build/Release/node_sqlite3.node" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/sqlite3/build/Release/node_sqlite3.node" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/sqlite3/deps/sqlite3.gyp" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/sqlite3/deps/sqlite3.gyp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/whatwg-url/lib/url-state-machine.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/whatwg-url/lib/url-state-machine.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/which/bin/node-which" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/which/bin/node-which" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/wide-align/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/wide-align/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/wide-align/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/wide-align/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/wide-align/align.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/wide-align/align.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/wide-align/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/wide-align/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/compare.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/compare.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/js/compare.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/js/compare.js" afterDir="false" />
-    </list>
+    <list default="true" id="c7d4c379-737e-40e8-ace5-685b2c31c415" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -196,19 +28,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/yahyazouhar/Downloads/SoccerStatsDataApp&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Cherry-picking in temp-save",
+    "last_opened_file_path": "/Users/yahyazouhar/Downloads/SoccerStatsDataApp",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/backend/database" />
@@ -236,7 +68,7 @@
       <workItem from="1763239949835" duration="2813000" />
       <workItem from="1763347248645" duration="6000" />
       <workItem from="1763347257317" duration="30000" />
-      <workItem from="1763347327534" duration="606000" />
+      <workItem from="1763347327534" duration="911000" />
     </task>
     <servers />
   </component>
