@@ -1,3 +1,5 @@
+let comparisonChart = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   // 1. --- AUTHENTICATION CHECK ---
   if (localStorage.getItem("isAuthenticated") !== "true") {
@@ -146,6 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         updateComparison();
+        updateChart(selectedPlayer1, selectedPlayer2);
       });
 
       suggestionsEl.appendChild(item);
@@ -251,7 +254,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 10. --- INIT ---
+  // 10 --- CHART ---
+
+  function updateChart(p1, p2) {
+    if (p1 == null || p2 == null) {return;}
+
+    const ctx = document.getElementById('comparisonChart').getContext('2d');
+
+    if (comparisonChart) {
+      comparisonChart.destroy();
+    }
+
+    comparisonChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Overall', 'Finishing', 'Passing', 'Dribbling', 'Speed', 'Stamina', 'Strength'],
+        datasets: [
+          {
+            label: p1.player_name,
+            data: [
+              p1.overall_rating, p1.finishing, p1.short_passing, 
+              p1.dribbling, p1.sprint_speed, p1.stamina, p1.strength
+            ],
+            backgroundColor: '#212529',
+            borderRadius: 4,
+            barPercentage: 0.6,
+          },
+          {
+            label: p2.player_name,
+            data: [
+              p2.overall_rating, p2.finishing, p2.short_passing, 
+              p2.dribbling, p2.sprint_speed, p2.stamina, p2.strength
+            ],
+            backgroundColor: '#e9ecef',
+            borderRadius: 4,
+            barPercentage: 0.6,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100
+          }
+        }
+      }
+    });
+  }
+
+  // 11. --- INIT ---
 
   setupSearchInput("player1");
   setupSearchInput("player2");
