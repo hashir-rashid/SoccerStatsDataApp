@@ -208,6 +208,148 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // 6. --- EXPORT FUNCTIONALITY ---
+  const exportCsvButton = document.getElementById("export-csv");
+  const exportPdfButton = document.getElementById("export-pdf");
+
+  if (exportCsvButton) {
+    exportCsvButton.addEventListener("click", exportToCSV);
+  }
+
+  if (exportPdfButton) {
+    exportPdfButton.addEventListener("click", exportToPDF);
+  }
+
+  // CSV function
+  function exportToCSV() {
+    if (allPlayers.length === 0) {
+      alert("No data to export");
+      return;
+    }
+
+    // Get the currently displayed data (sorted and limited)
+    let playersToExport = allPlayers;
+    if (currentLimit !== -1) {
+      playersToExport = allPlayers.slice(0, currentLimit);
+    }
+    const sortedPlayers = sortPlayers(playersToExport, currentSort);
+
+    // Create CSV content
+    const headers = ["Player Name", "Age", "Weight (kg)", "Height (cm)"];
+    const csvContent = [
+      headers.join(","),
+      ...sortedPlayers.map(player => {
+        const age = calculateAge(player.birthday) || "N/A";
+        const weight = Math.round(player.weight * 0.453592) || "N/A";
+        const height = Math.round(player.height) || "N/A";
+        return [
+          `"${(player.player_name || "Unknown").replace(/"/g, '""')}"`,
+          age,
+          weight,
+          height
+        ].join(",");
+      })
+    ].join("\n");
+
+    // Create and download file
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `players_export_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // PDF function
+  function exportToPDF() {
+    if (allPlayers.length === 0) {
+      alert("No data to export");
+      return;
+    }
+
+    // Get the currently displayed data (sorted and limited)
+    let playersToExport = allPlayers;
+    if (currentLimit !== -1) {
+      playersToExport = allPlayers.slice(0, currentLimit);
+    }
+    const sortedPlayers = sortPlayers(playersToExport, currentSort);
+
+    // Create a simple PDF using window.print() with custom styles
+    const printWindow = window.open('', '_blank');
+    const printContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Players Export</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          h1 { color: #333; border-bottom: 2px solid #333; padding-bottom: 10px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+          th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          th { background-color: #f5f5f5; font-weight: bold; }
+          tr:nth-child(even) { background-color: #f9f9f9; }
+          .export-info { margin-bottom: 20px; color: #666; }
+        </style>
+      </head>
+      <body>
+        <h1>Players Export</h1>
+        <div class="export-info">
+          <p>Generated on: ${new Date().toLocaleDateString()}</p>
+          <p>Total players: ${sortedPlayers.length}</p>
+          <p>Sort: ${getSortDisplayName(currentSort)}</p>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Player Name</th>
+              <th>Age</th>
+              <th>Weight (kg)</th>
+              <th>Height (cm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sortedPlayers.map(player => {
+              const age = calculateAge(player.birthday) || "N/A";
+              const weight = Math.round(player.weight * 0.453592) || "N/A";
+              const height = Math.round(player.height) || "N/A";
+              return `
+                <tr>
+                  <td>${player.player_name || "Unknown"}</td>
+                  <td>${age}</td>
+                  <td>${weight}</td>
+                  <td>${height}</td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.print();
+  }
+
+  // Get Display Name for the sort type
+  function getSortDisplayName(sortType) {
+    const sortNames = {
+      'name-asc': 'Name A-Z',
+      'name-desc': 'Name Z-A',
+      'age-asc': 'Age (Low to High)',
+      'age-desc': 'Age (High to Low)',
+      'height-asc': 'Height (Low to High)',
+      'height-desc': 'Height (High to Low)',
+      'weight-asc': 'Weight (Low to High)',
+      'weight-desc': 'Weight (High to Low)'
+    };
+    return sortNames[sortType] || sortType;
+  }
+
   // Load Players with default limit and sort
   loadPlayers();
 });

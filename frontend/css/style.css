@@ -545,3 +545,22 @@ body {
 .sort-select:hover {
   border-color: #9ca3af;
 }
+
+/* Export buttons */
+.export-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.export-buttons .btn-outline {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.export-buttons .btn-outline:hover {
+  background-color: #f8f9fa;
+}
