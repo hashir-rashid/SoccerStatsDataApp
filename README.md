@@ -1,5 +1,5 @@
 # Soccerats Soccer Stats
-Since I'm the coolest, we are using this name for the project and no objections.
+Simple HTML website to display, compare, and contrast stats for European Soccer Players, Teams, and Leagues. 
 
 ## Requirements
 - NodeJs (latest version)
