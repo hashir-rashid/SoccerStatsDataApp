@@ -1,5 +1,3 @@
-// compare.js
-
 document.addEventListener("DOMContentLoaded", () => {
   
   // 1. --- AUTHENTICATION CHECK ---
@@ -25,20 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
   // 3. --- SET ACTIVE NAV LINK ---
-  // Deactivate other links
   document.getElementById("nav-dashboard")?.classList.remove("active");
   document.getElementById("nav-players")?.classList.remove("active");
   document.getElementById("nav-teams")?.classList.remove("active");
   document.getElementById("nav-matches")?.classList.remove("active");
   document.getElementById("nav-statistics")?.classList.remove("active");
   
-  // Activate compare link
   const compareLink = document.getElementById("nav-compare");
   if (compareLink) {
     compareLink.classList.add("active");
   }
 
-  // 4. --- MOCK PLAYER DATABASE (25 Players) ---
+  // 4. --- MOCK PLAYER DATABASE ---
   const mockPlayerDatabase = [
     {
       id: 1, player_name: "Lionel Messi",
@@ -240,9 +236,10 @@ document.addEventListener("DOMContentLoaded", () => {
   player1Select.value = mockPlayerDatabase[0].id; // Messi
   player2Select.value = mockPlayerDatabase[1].id; // Ronaldo
 
-  // 8. --- COMPARISON LOGIC ---
+  // 8. --- CHART VARIABLE ---
+  let comparisonChart = null;
 
-  // List of all stat IDs to update
+  // 9. --- COMPARISON LOGIC ---
   const statIds = [
     "overall_rating", "potential", "height", "weight",
     "finishing", "short_passing", "dribbling",
@@ -270,6 +267,62 @@ document.addEventListener("DOMContentLoaded", () => {
       const el = document.getElementById(`p2-${stat}`);
       if (el) el.textContent = p2Data[stat] ?? "N/A";
     });
+
+    // Update Chart
+    updateChart(p1Data, p2Data);
+  }
+
+  // 10. --- CHART FUNCTION ---
+  function updateChart(p1, p2) {
+    const ctx = document.getElementById('comparisonChart').getContext('2d');
+
+    if (comparisonChart) {
+      comparisonChart.destroy();
+    }
+
+    comparisonChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Overall', 'Finishing', 'Passing', 'Dribbling', 'Speed', 'Stamina', 'Strength'],
+        datasets: [
+          {
+            label: p1.player_name,
+            data: [
+              p1.overall_rating, p1.finishing, p1.short_passing, 
+              p1.dribbling, p1.sprint_speed, p1.stamina, p1.strength
+            ],
+            backgroundColor: '#212529',
+            borderRadius: 4,
+            barPercentage: 0.6,
+          },
+          {
+            label: p2.player_name,
+            data: [
+              p2.overall_rating, p2.finishing, p2.short_passing, 
+              p2.dribbling, p2.sprint_speed, p2.stamina, p2.strength
+            ],
+            backgroundColor: '#e9ecef',
+            borderRadius: 4,
+            barPercentage: 0.6,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100
+          }
+        }
+      }
+    });
   }
 
   // This function enforces the "no same player" rule
@@ -290,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 9. --- ADD EVENT LISTENERS ---
+  // 11. --- ADD EVENT LISTENERS ---
   player1Select.addEventListener("change", () => {
     syncDropdowns("player1");
     updateComparison();
@@ -301,7 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateComparison();
   });
 
-  // 10. --- INITIAL LOAD ---
+  // 12. --- INITIAL LOAD ---
   syncDropdowns("player1");
   syncDropdowns("player2");
   updateComparison();
