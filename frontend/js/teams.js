@@ -1,5 +1,3 @@
-// teams.js
-
 document.addEventListener("DOMContentLoaded", () => {
   // 1. --- AUTHENTICATION CHECK ---
   if (localStorage.getItem("isAuthenticated") !== "true") {
@@ -34,16 +32,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 4. --- LOAD REAL TEAMS FROM API (SQLite) ---
   const gridContainer = document.getElementById("team-grid-container");
+  let currentLimit = 50; // Default limit
+  let currentSort = 'name-asc';
+  let allTeams = [];
 
-  async function loadTeams(limit = 10) {
+  // Load the teams
+  async function loadTeams(limit = currentLimit, sort = currentSort) {
     try {
-      // Ask backend for first x teams from the SQLite DB
-      const response = await fetch(`/api/teams?limit=${limit}&page=1`);
+      // Show loading state
+      gridContainer.innerHTML = `
+        <div class="team-card">
+          <div class="team-card-content">
+            <h3 class="team-card-title">Loading teams...</h3>
+          </div>
+        </div>
+      `;
+
+      // Use a very high limit for "All entries"
+      const effectiveLimit = limit === -1 ? 10000 : limit;
+      
+      // Ask backend for teams from the SQLite DB
+      const response = await fetch(`/api/teams?limit=${effectiveLimit}&page=1`);
       if (!response.ok) {
         throw new Error(`Failed to fetch teams: ${response.status}`);
       }
 
       const teams = await response.json();
+      allTeams = teams; // Store for client-side sorting
 
       // Clear existing content
       gridContainer.innerHTML = "";
@@ -60,47 +75,17 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      teams.forEach((team) => {
-        const card = document.createElement("div");
-        card.className = "team-card";
+      // Apply limit if not "all entries" (-1)
+      let teamsToShow = teams;
+      if (limit !== -1) {
+        teamsToShow = teams.slice(0, limit);
+      }
 
-        const name = team.team_long_name || "Unknown team";
-        const shortName = team.team_short_name || name;
+      // Apply sorting
+      const sortedTeams = sortTeams(teamsToShow, sort);
+      
+      renderTeams(sortedTeams);
 
-        // The SQLite Team table in this dataset doesn’t store coach/wins/losses,
-        // so we just show placeholders for those stats.
-        const coach = "N/A";
-        const playersCount = "N/A";
-        const wins = "-";
-        const losses = "-";
-
-        card.innerHTML = `
-          <div class="team-card-banner">
-            <span>${shortName}</span>
-          </div>
-          <div class="team-card-content">
-            <h3 class="team-card-title">${name}</h3>
-            <p class="team-card-meta">Coach: ${coach}</p>
-            
-            <div class="team-card-stats">
-              <div class="stat">
-                <div class="stat-label">Players</div>
-                <div class="stat-value-sm">${playersCount}</div>
-              </div>
-              <div class="stat">
-                <div class="stat-label">Wins</div>
-                <div class="stat-value-sm">${wins}</div>
-              </div>
-              <div class="stat">
-                <div class="stat-label">Losses</div>
-                <div class="stat-value-sm">${losses}</div>
-              </div>
-            </div>
-          </div>
-        `;
-
-        gridContainer.appendChild(card);
-      });
     } catch (err) {
       console.error("Error loading teams:", err);
       gridContainer.innerHTML = `
@@ -114,6 +99,77 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Kick it off
-  loadTeams();
+  // Sort the teams
+  function sortTeams(teams, sortType) {
+    const sortedTeams = [...teams];
+    
+    switch (sortType) {
+      case 'name-asc':
+        return sortedTeams.sort((a, b) => (a.team_long_name || '').localeCompare(b.team_long_name || ''));
+      
+      case 'name-desc':
+        return sortedTeams.sort((a, b) => (b.team_long_name || '').localeCompare(a.team_long_name || ''));
+      
+      default:
+        return sortedTeams;
+    }
+  }
+
+  // Render the teams
+  function renderTeams(teams) {
+    // Clear existing content first
+    gridContainer.innerHTML = "";
+    
+    teams.forEach((team) => {
+      const card = document.createElement("div");
+      card.className = "team-card";
+
+      const name = team.team_long_name || "Unknown team";
+      const shortName = team.team_short_name || name;
+
+      card.innerHTML = `
+        <div class="team-card-banner">
+          <span>${shortName}</span>
+        </div>
+        <div class="team-card-content">
+          <h3 class="team-card-title">${name}</h3>
+        </div>
+      `;
+
+      gridContainer.appendChild(card);
+    });
+  }
+
+  // 5. --- LIMIT SELECTOR FUNCTIONALITY ---
+  const limitSelect = document.getElementById("limit-select");
+  const sortSelect = document.getElementById("sort-select");
+
+  if (limitSelect) {
+    limitSelect.addEventListener("change", (event) => {
+      const newLimit = parseInt(event.target.value);
+      currentLimit = newLimit;
+      loadTeams(newLimit, currentSort); 
+    });
+  }
+
+  if (sortSelect) {
+    sortSelect.removeAttribute('disabled'); // Enable the sort dropdown
+    sortSelect.addEventListener("change", (event) => {
+      const newSort = event.target.value;
+      currentSort = newSort;
+      
+      // If we already have teams loaded, just re-sort them
+      if (allTeams.length > 0) {
+        const teamsToShow = currentLimit === -1 ? allTeams : allTeams.slice(0, currentLimit);
+        const sortedTeams = sortTeams(teamsToShow, newSort);
+        renderTeams(sortedTeams);
+      } else {
+        // Otherwise reload from server
+        loadTeams(currentLimit, newSort);
+      }
+    });
+  }
+
+  // Load the teams
+  loadTeams(currentLimit, currentSort);
 });

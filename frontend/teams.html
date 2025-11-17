@@ -59,6 +59,31 @@
         <h1 class="main-title">Teams</h1>
       </div>
 
+      <div class="content-card" style="margin-bottom: 1rem; padding: 1rem;">
+        <div class="table-controls">
+          <div class="controls-group">
+            <div class="limit-selector">
+              <label for="limit-select">Show:</label>
+              <select id="limit-select" class="limit-select">
+                <option value="10">10 entries</option>
+                <option value="25">25 entries</option>
+                <option value="50" selected>50 entries</option>
+                <option value="100">100 entries</option>
+                <option value="-1">All entries</option>
+              </select>
+            </div>
+            
+            <div class="sort-selector">
+              <label for="sort-select">Sort by:</label>
+              <select id="sort-select" class="sort-select" disabled>
+                <option value="name-asc">Name A-Z</option>
+                <option value="name-desc">Name Z-A</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="team-grid" id="team-grid-container">
         </div>
 
