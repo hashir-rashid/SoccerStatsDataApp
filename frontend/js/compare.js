@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1. --- AUTHENTICATION CHECK ---
   if (localStorage.getItem("isAuthenticated") !== "true") {
     alert("You must be logged in to view this page.");
-    window.location.href = "/login.html";
+    window.location.href = "login.html";
     return;
   }
 
