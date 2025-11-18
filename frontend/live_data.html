@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Football Data - Soccerats Soccer Stats</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+        <div class="logo">
+            <div class="icon-bg-sm">
+            <svg class="icon-sm" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V22"></path><path d="M14 14.66V22"></path><path d="M17.5 8.9c0 .4-.2 1.1-.6 1.1-.4 0-1.6-.8-1.6-2.2 0-1.6 1.2-2.8 1.6-2.8.4 0 .6.7.6 1.1Z"></path><path d="M6.5 8.9c0 .4.2 1.1.6 1.1.4 0 1.6-.8 1.6-2.2 0-1.6-1.2-2.8-1.6-2.8-.4 0-.6.7-.6 1.1Z"></path><path d="M12 2C7 2 7 9 7 9c0 3 1.5 6 5 6s5-3 5-6c0 0 0-7-5-7Z"></path></svg>
+            </div>
+            <h1 class="logo-title">Soccerats Soccer Stats</h1>
+        </div>
+        <div class="user-info">
+            <span class="user-display" id="user-name-display">
+            </span>
+            <button id="logout-button" class="btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-xs"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
+            Logout
+            </button>
+        </div>
+        </div>
+    </header>
+
+    <div class="layout-container">
+    
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-link" id="nav-dashboard">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-sm"><line x1="18" x2="18" y1="20" y2="10"></line><line x1="12" x2="12" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="14"></line></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="players.html" class="nav-link" id="nav-players">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-sm"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <span>Players</span>
+        </a>
+        <a href="teams.html" class="nav-link" id="nav-teams">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-sm"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V22"></path><path d="M14 14.66V22"></path><path d="M17.5 8.9c0 .4-.2 1.1-.6 1.1-.4 0-1.6-.8-1.6-2.2 0-1.6 1.2-2.8 1.6-2.8.4 0 .6.7.6 1.1Z"></path><path d="M6.5 8.9c0 .4.2 1.1.6 1.1.4 0 1.6-.8 1.6-2.2 0-1.6-1.2-2.8-1.6-2.8-.4 0-.6.7-.6 1.1Z"></path><path d="M12 2C7 2 7 9 7 9c0 3 1.5 6 5 6s5-3 5-6c0 0 0-7-5-7Z"></path></svg>
+          <span>Teams</span>
+        </a>
+        <a href="statistics.html" class="nav-link" id="nav-statistics">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-sm"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+          <span>Statistics</span>
+        </a>
+        <a href="compare.html" class="nav-link" id="nav-compare">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-sm"><line x1="18" x2="18" y1="20" y2="10"></line><line x1="12" x2="12" y1="20" y2="4"></line><line x1="6" x2="6" y1="20" y2="14"></line></svg>
+          <span>Compare</span>
+        </a>
+        <a href="live_data.html" class="nav-link" id="nav-compare">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <span>Live Data</span>
+        </a>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+        <h1 class="main-title">Live Football Data</h1>
+        <p class="main-subtitle">Live matches obtained from Football-Data.org</p>
+        
+        <div class="content-card" style="margin-bottom: 1rem; padding: 1rem;">
+            <div class="table-controls">
+                <div class="controls-group">
+                <div class="export-buttons">
+                    <button id="export-csv" class="btn-outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-xs"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+                    Export CSV
+                    </button>
+                    <button id="export-pdf" class="btn-outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-xs"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Export PDF
+                    </button>
+                </div>
+                
+                <div class="live-data-buttons">
+                    <button id="fetch-live-data" class="btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-xs">
+                        <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9v-4.5m0 4.5c-1.5 0-3-.5-4.5-1.5"/>
+                    </svg>
+                    Fetch Live Matches
+                    </button>
+                    <button id="save-to-db" class="btn-outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-xs">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    Save to Database
+                    </button>
+                </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Live Matches</h2>
+        <div class="content-card">
+            <div id="live-data-results">
+                <div class="no-matches" style="text-align: center;">
+                    <svg class="icon-sm" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <p>Click "Fetch Live Matches" to load data</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/live_data.js"></script>
+</body>
+</html>

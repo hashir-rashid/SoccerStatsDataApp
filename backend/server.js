@@ -14,13 +14,33 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 // TWO SEPARATE DATABASE CONNECTIONS:
 
-// 1. READ-ONLY: For sports data (players, teams, matches)
+// 1. READ-WRITE: For sports data (players, teams, matches) - CHANGED TO READ-WRITE
 const sportsDbPath = path.join(__dirname, 'database', 'database.sqlite');
-const sportsDb = new sqlite3.Database(sportsDbPath, sqlite3.OPEN_READONLY, (err) => {
+const sportsDb = new sqlite3.Database(sportsDbPath, (err) => {
   if (err) {
     console.error('Error opening sports database:', err.message);
   } else {
-    console.log('Connected to READ-ONLY sports database');
+    console.log('Connected to SPORTS database');
+    
+    // Create external_matches table if it doesn't exist
+    sportsDb.run(`CREATE TABLE IF NOT EXISTS external_matches (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      external_id INTEGER UNIQUE,
+      home_team TEXT NOT NULL,
+      away_team TEXT NOT NULL,
+      home_score INTEGER,
+      away_score INTEGER,
+      status TEXT,
+      match_date TEXT,
+      competition TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`, (err) => {
+      if (err) {
+        console.error('Error creating external_matches table:', err.message);
+      } else {
+        console.log('External matches table ready');
+      }
+    });
   }
 });
 
@@ -30,7 +50,7 @@ const authDb = new sqlite3.Database(authDbPath, (err) => {
   if (err) {
     console.error('Error opening auth database:', err.message);
   } else {
-    console.log('Connected to READ-WRITE auth database');
+    console.log('Connected to AUTH database');
     
     // Create users table if it doesn't exist
     authDb.run(`CREATE TABLE IF NOT EXISTS users (
@@ -413,6 +433,105 @@ app.get('/api/stats/top-playmakers', (req, res) => {
   sportsDb.all(query, [], (err, rows) => {
     if (err) {
       console.error('Error fetching top playmakers:', err);
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json(rows);
+  });
+});
+
+// External API integration for live match data
+app.get('/api/external/matches', async (req, res) => {
+  try {
+    console.log('Fetching external matches data...');
+    
+    const response = await fetch('https://api.football-data.org/v4/matches', {
+      headers: {
+        'X-Auth-Token': 'f0969796569944498db75ea1aaccc5cb'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    console.log('External API response received');
+    res.json(data);
+    
+  } catch (error) {
+    console.error('Error fetching external data:', error.message);
+    res.status(500).json({ error: 'Failed to fetch external data: ' + error.message });
+  }
+});
+
+// Save external data to your database
+app.post('/api/external/save-matches', async (req, res) => {
+  try {
+    const { matches } = req.body;
+    
+    if (!matches || !matches.matches) {
+      return res.status(400).json({ error: 'Invalid matches data' });
+    }
+
+    let savedCount = 0;
+    let errors = [];
+
+    // Process each match
+    for (const match of matches.matches) {
+      try {
+        const result = await new Promise((resolve, reject) => {
+          sportsDb.run(
+            `INSERT OR IGNORE INTO external_matches 
+             (external_id, home_team, away_team, home_score, away_score, status, match_date, competition) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              match.id,
+              match.homeTeam?.name || 'Unknown',
+              match.awayTeam?.name || 'Unknown',
+              match.score?.fullTime?.home ?? null,
+              match.score?.fullTime?.away ?? null,
+              match.status,
+              match.utcDate,
+              match.competition?.name || 'Unknown'
+            ],
+            function(err) {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(this.changes);
+              }
+            }
+          );
+        });
+        
+        if (result > 0) {
+          savedCount++;
+        }
+      } catch (err) {
+        errors.push(`Match ${match.id}: ${err.message}`);
+      }
+    }
+
+    res.json({ 
+      success: true, 
+      saved: savedCount,
+      total: matches.matches.length,
+      errors: errors.length > 0 ? errors : undefined
+    });
+    
+  } catch (error) {
+    console.error('Error saving external data:', error);
+    res.status(500).json({ error: 'Failed to save external data: ' + error.message });
+  }
+});
+
+// Get saved external matches from database
+app.get('/api/external/saved-matches', (req, res) => {
+  const query = `SELECT * FROM external_matches ORDER BY match_date DESC`;
+  
+  sportsDb.all(query, [], (err, rows) => {
+    if (err) {
       res.status(500).json({ error: err.message });
       return;
     }

@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function loadTopCardsData() {
   try {
-    console.log('Starting to load top cards data...');
 
     const endpoints = [
       '/api/stats/top-player',
@@ -62,7 +61,6 @@ async function loadTopCardsData() {
     const responses = await Promise.all(
       endpoints.map(async (endpoint) => {
         try {
-          console.log(`Fetching: ${endpoint}`);
           const response = await fetch(endpoint);
           
           if (!response.ok) {
@@ -84,8 +82,6 @@ async function loadTopCardsData() {
       })
     );
 
-    console.log('All API responses:', responses);
-
     // Process successful responses
     const successfulResponses = responses.filter(r => r.success);
     
@@ -98,8 +94,6 @@ async function loadTopCardsData() {
     const highestPotential = successfulResponses.find(r => r.endpoint === '/api/stats/highest-potential')?.data || { name: 'N/A', potential: 0 };
     const avgAge = successfulResponses.find(r => r.endpoint === '/api/stats/avg-player-age')?.data || { avg_age: 0 };
     const avgRating = successfulResponses.find(r => r.endpoint === '/api/stats/avg-rating')?.data || { avg_rating: 0 };
-
-    console.log('Processed data:', { topPlayer, highestPotential, avgAge, avgRating });
 
     // Update the top cards with real data
     updateTopCard('Top Rated Player', topPlayer.name || 'No data', `${topPlayer.overall_rating || 0} rating`, 'Player');
