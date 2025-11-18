@@ -21,6 +21,7 @@ const sportsDb = new sqlite3.Database(sportsDbPath, (err) => {
     console.error('Error opening sports database:', err.message);
   } else {
     console.log('Connected to SPORTS database');
+    createIndexes(sportsDb);
     
     // Create external_matches table if it doesn't exist
     sportsDb.run(`CREATE TABLE IF NOT EXISTS external_matches (
@@ -43,6 +44,24 @@ const sportsDb = new sqlite3.Database(sportsDbPath, (err) => {
     });
   }
 });
+
+// Add the createIndexes function definition
+const createIndexes = (sportsDb) => {
+  console.log('Creating performance indexes...');
+  
+  // Indexes for Player_Attributes table
+  sportsDb.run('CREATE INDEX IF NOT EXISTS idx_player_attributes_player_api_id ON Player_Attributes(player_api_id)');
+  sportsDb.run('CREATE INDEX IF NOT EXISTS idx_player_attributes_overall_rating ON Player_Attributes(overall_rating)');
+  sportsDb.run('CREATE INDEX IF NOT EXISTS idx_player_attributes_potential ON Player_Attributes(potential)');
+  sportsDb.run('CREATE INDEX IF NOT EXISTS idx_player_attributes_date ON Player_Attributes(date)');
+  sportsDb.run('CREATE INDEX IF NOT EXISTS idx_player_attributes_preferred_foot ON Player_Attributes(preferred_foot)');
+  
+  // Indexes for Player table
+  sportsDb.run('CREATE INDEX IF NOT EXISTS idx_player_player_api_id ON Player(player_api_id)');
+  sportsDb.run('CREATE INDEX IF NOT EXISTS idx_player_name ON Player(player_name)');
+  
+  console.log('Performance indexes created');
+};
 
 // 2. READ-WRITE: For user authentication data
 const authDbPath = path.join(__dirname, 'database', 'users_database.sqlite');
@@ -67,6 +86,10 @@ const authDb = new sqlite3.Database(authDbPath, (err) => {
 // Import and use auth routes (pass the authDb)
 const authRoutes = require('./auth')(authDb);
 app.use('/api/auth', authRoutes);
+
+// Import and use view routes (pass the sportsDb)
+const viewRoutes = require('./views')(sportsDb);
+app.use('/api/views', viewRoutes);
 
 // Sports data routes use sportsDb
 app.get('/api/players', (req, res) => {
@@ -326,7 +349,6 @@ app.get('/api/stats/avg-rating', (req, res) => {
 
 // Get player with highest potential
 app.get('/api/stats/highest-potential', (req, res) => {
-  console.log('Fetching highest potential player...');
   const query = `
     SELECT p.player_name as name, pa.potential
     FROM Player p
@@ -342,14 +364,12 @@ app.get('/api/stats/highest-potential', (req, res) => {
       res.status(500).json({ error: 'Database error: ' + err.message });
       return;
     }
-    console.log('Highest potential result:', row);
     res.json(row || { name: 'No data available', potential: 0 });
   });
 });
 
 // Get average player age
 app.get('/api/stats/avg-player-age', (req, res) => {
-  console.log('Fetching average player age...');
   const query = `
     SELECT AVG(
       (julianday('now') - julianday(substr(birthday, 1, 10))) / 365.25
@@ -379,7 +399,6 @@ app.get('/api/stats/avg-player-age', (req, res) => {
       });
       return;
     }
-    console.log('Average age result:', row);
     res.json({ avg_age: row.avg_age || 25.5 });
   });
 });
@@ -443,7 +462,6 @@ app.get('/api/stats/top-playmakers', (req, res) => {
 // External API integration for live match data
 app.get('/api/external/matches', async (req, res) => {
   try {
-    console.log('Fetching external matches data...');
     
     const response = await fetch('https://api.football-data.org/v4/matches', {
       headers: {
