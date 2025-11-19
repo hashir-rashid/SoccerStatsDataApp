@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
             matchesByCompetition[competition].forEach(match => {
                 const score = match.score?.fullTime;
                 const hasScore = score && score.home !== null && score.away !== null;
-                const scoreDisplay = hasScore ? `${score.home} - ${score.away}` : 'VS';
+                const scoreDisplay = hasScore ? `${score.home} - ${score.away}` : '';
                 
                 html += `
                     <div class="match-card">

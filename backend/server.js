@@ -474,7 +474,6 @@ app.get('/api/external/matches', async (req, res) => {
     }
     
     const data = await response.json();
-    console.log('External API response received');
     res.json(data);
     
   } catch (error) {
