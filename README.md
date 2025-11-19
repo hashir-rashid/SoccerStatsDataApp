@@ -5,7 +5,7 @@ Simple HTML website to display, compare, and contrast stats for European Soccer 
 - NodeJs (latest version)
 
 ## How to run
-### Clone the repo and install dependencies
+### Clone the repo and install dependencies. You must be in a bash terminal to execute:
 ```bash
 git clone -b main https://github.com/hashir-rashid/SoccerStatsDataApp.git
 cd backend
