@@ -1,4 +1,3 @@
-// backend/devSetRole.js
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
@@ -11,7 +10,7 @@ const db = new sqlite3.Database(authDbPath, (err) => {
     }
 });
 
-// Usage: node devSetRole.js email@domain.com admin
+// Usage: node dev_set_role.js email@domain.com admin
 const email = process.argv[2];
 const role = process.argv[3] || 'admin';
 
