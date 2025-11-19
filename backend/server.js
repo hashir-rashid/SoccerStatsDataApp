@@ -662,6 +662,346 @@ app.post('/api/teams', async (req, res) => {
   }
 });
 
+// Update player
+app.patch('/api/players/:id', async (req, res) => {
+  try {
+    const playerId = req.params.id;
+    const { player_name, birthday, weight, height } = req.body;
+
+    // Check if player exists
+    sportsDb.get('SELECT * FROM Player WHERE id = ?', [playerId], (err, player) => {
+      if (err) {
+        return res.status(500).json({ error: 'Database error' });
+      }
+      
+      if (!player) {
+        return res.status(404).json({ error: 'Player not found' });
+      }
+
+      // Build dynamic update query based on provided fields
+      const updates = [];
+      const params = [];
+
+      if (player_name !== undefined) {
+        updates.push('player_name = ?');
+        params.push(player_name);
+      }
+      if (birthday !== undefined) {
+        updates.push('birthday = ?');
+        params.push(birthday);
+      }
+      if (weight !== undefined) {
+        updates.push('weight = ?');
+        params.push(weight);
+      }
+      if (height !== undefined) {
+        updates.push('height = ?');
+        params.push(height);
+      }
+
+      if (updates.length === 0) {
+        return res.status(400).json({ error: 'No fields to update' });
+      }
+
+      params.push(playerId);
+
+      const query = `UPDATE Player SET ${updates.join(', ')} WHERE id = ?`;
+
+      sportsDb.run(query, params, function(updateErr) {
+        if (updateErr) {
+          console.error('Error updating player:', updateErr);
+          return res.status(500).json({ error: 'Failed to update player' });
+        }
+
+        if (this.changes === 0) {
+          return res.status(404).json({ error: 'Player not found' });
+        }
+
+        res.json({ 
+          success: true, 
+          message: 'Player updated successfully',
+          changes: this.changes
+        });
+      });
+    });
+
+  } catch (error) {
+    console.error('Error in update player route:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// PUT endpoint for full player update (alternative to PATCH)
+app.put('/api/players/:id', async (req, res) => {
+  try {
+    const playerId = req.params.id;
+    const { player_name, birthday, weight, height } = req.body;
+
+    if (!player_name) {
+      return res.status(400).json({ error: 'Player name is required for full update' });
+    }
+
+    // Check if player exists
+    sportsDb.get('SELECT * FROM Player WHERE id = ?', [playerId], (err, player) => {
+      if (err) {
+        return res.status(500).json({ error: 'Database error' });
+      }
+      
+      if (!player) {
+        return res.status(404).json({ error: 'Player not found' });
+      }
+
+      const query = `
+        UPDATE Player 
+        SET player_name = ?, birthday = ?, weight = ?, height = ?
+        WHERE id = ?
+      `;
+
+      sportsDb.run(query, [
+        player_name,
+        birthday || null,
+        weight || null,
+        height || null,
+        playerId
+      ], function(updateErr) {
+        if (updateErr) {
+          console.error('Error updating player:', updateErr);
+          return res.status(500).json({ error: 'Failed to update player' });
+        }
+
+        if (this.changes === 0) {
+          return res.status(404).json({ error: 'Player not found' });
+        }
+
+        res.json({ 
+          success: true, 
+          message: 'Player updated successfully',
+          changes: this.changes
+        });
+      });
+    });
+
+  } catch (error) {
+    console.error('Error in update player route:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Delete player
+app.delete('/api/players/:id', async (req, res) => {
+  try {
+    const playerId = req.params.id;
+
+    // First, check if player exists and get their API IDs
+    sportsDb.get('SELECT player_api_id FROM Player WHERE id = ?', [playerId], (err, player) => {
+      if (err) {
+        return res.status(500).json({ error: 'Database error' });
+      }
+      
+      if (!player) {
+        return res.status(404).json({ error: 'Player not found' });
+      }
+
+      const playerApiId = player.player_api_id;
+
+      // Delete player attributes first (foreign key constraint)
+      sportsDb.run('DELETE FROM Player_Attributes WHERE player_api_id = ?', [playerApiId], (attrErr) => {
+        if (attrErr) {
+          console.error('Error deleting player attributes:', attrErr);
+          // Continue with player deletion even if attributes deletion fails
+        }
+
+        // Delete the player
+        sportsDb.run('DELETE FROM Player WHERE id = ?', [playerId], function(deleteErr) {
+          if (deleteErr) {
+            console.error('Error deleting player:', deleteErr);
+            return res.status(500).json({ error: 'Failed to delete player' });
+          }
+
+          if (this.changes === 0) {
+            return res.status(404).json({ error: 'Player not found' });
+          }
+
+          res.json({ 
+            success: true, 
+            message: 'Player deleted successfully',
+            changes: this.changes
+          });
+        });
+      });
+    });
+
+  } catch (error) {
+    console.error('Error in delete player route:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Update team
+app.patch('/api/teams/:id', async (req, res) => {
+  try {
+    const teamId = req.params.id;
+    const { team_long_name, team_short_name } = req.body;
+
+    // Check if team exists
+    sportsDb.get('SELECT * FROM Team WHERE id = ?', [teamId], (err, team) => {
+      if (err) {
+        return res.status(500).json({ error: 'Database error' });
+      }
+      
+      if (!team) {
+        return res.status(404).json({ error: 'Team not found' });
+      }
+
+      // Build dynamic update query based on provided fields
+      const updates = [];
+      const params = [];
+
+      if (team_long_name !== undefined) {
+        updates.push('team_long_name = ?');
+        params.push(team_long_name);
+      }
+      if (team_short_name !== undefined) {
+        updates.push('team_short_name = ?');
+        params.push(team_short_name);
+      }
+
+      if (updates.length === 0) {
+        return res.status(400).json({ error: 'No fields to update' });
+      }
+
+      params.push(teamId);
+
+      const query = `UPDATE Team SET ${updates.join(', ')} WHERE id = ?`;
+
+      sportsDb.run(query, params, function(updateErr) {
+        if (updateErr) {
+          console.error('Error updating team:', updateErr);
+          return res.status(500).json({ error: 'Failed to update team' });
+        }
+
+        if (this.changes === 0) {
+          return res.status(404).json({ error: 'Team not found' });
+        }
+
+        res.json({ 
+          success: true, 
+          message: 'Team updated successfully',
+          changes: this.changes
+        });
+      });
+    });
+
+  } catch (error) {
+    console.error('Error in update team route:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// PUT endpoint for full team update (alternative to PATCH)
+app.put('/api/teams/:id', async (req, res) => {
+  try {
+    const teamId = req.params.id;
+    const { team_long_name, team_short_name } = req.body;
+
+    if (!team_long_name || !team_short_name) {
+      return res.status(400).json({ error: 'Team long name and short name are required for full update' });
+    }
+
+    // Check if team exists
+    sportsDb.get('SELECT * FROM Team WHERE id = ?', [teamId], (err, team) => {
+      if (err) {
+        return res.status(500).json({ error: 'Database error' });
+      }
+      
+      if (!team) {
+        return res.status(404).json({ error: 'Team not found' });
+      }
+
+      const query = `
+        UPDATE Team 
+        SET team_long_name = ?, team_short_name = ?
+        WHERE id = ?
+      `;
+
+      sportsDb.run(query, [
+        team_long_name,
+        team_short_name,
+        teamId
+      ], function(updateErr) {
+        if (updateErr) {
+          console.error('Error updating team:', updateErr);
+          return res.status(500).json({ error: 'Failed to update team' });
+        }
+
+        if (this.changes === 0) {
+          return res.status(404).json({ error: 'Team not found' });
+        }
+
+        res.json({ 
+          success: true, 
+          message: 'Team updated successfully',
+          changes: this.changes
+        });
+      });
+    });
+
+  } catch (error) {
+    console.error('Error in update team route:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Delete team
+app.delete('/api/teams/:id', async (req, res) => {
+  try {
+    const teamId = req.params.id;
+
+    // First, check if team exists and get their API IDs
+    sportsDb.get('SELECT team_api_id FROM Team WHERE id = ?', [teamId], (err, team) => {
+      if (err) {
+        return res.status(500).json({ error: 'Database error' });
+      }
+      
+      if (!team) {
+        return res.status(404).json({ error: 'Team not found' });
+      }
+
+      const teamApiId = team.team_api_id;
+
+      // Delete team attributes first (foreign key constraint)
+      sportsDb.run('DELETE FROM Team_Attributes WHERE team_api_id = ?', [teamApiId], (attrErr) => {
+        if (attrErr) {
+          console.error('Error deleting team attributes:', attrErr);
+          // Continue with team deletion even if attributes deletion fails
+        }
+
+        // Delete the team
+        sportsDb.run('DELETE FROM Team WHERE id = ?', [teamId], function(deleteErr) {
+          if (deleteErr) {
+            console.error('Error deleting team:', deleteErr);
+            return res.status(500).json({ error: 'Failed to delete team' });
+          }
+
+          if (this.changes === 0) {
+            return res.status(404).json({ error: 'Team not found' });
+          }
+
+          res.json({ 
+            success: true, 
+            message: 'Team deleted successfully',
+            changes: this.changes
+          });
+        });
+      });
+    });
+
+  } catch (error) {
+    console.error('Error in delete team route:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // SPA catch-all handler
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dashboard.html'));
