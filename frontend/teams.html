@@ -84,6 +84,13 @@
                 <option value="name-desc">Name Z-A</option>
               </select>
             </div>
+
+            <div class="export-buttons">
+            <button id="add-team-button" class="btn-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-xs"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V22"></path><path d="M14 14.66V22"></path><path d="M17.5 8.9c0 .4-.2 1.1-.6 1.1-.4 0-1.6-.8-1.6-2.2 0-1.6 1.2-2.8 1.6-2.8.4 0 .6.7.6 1.1Z"></path><path d="M6.5 8.9c0 .4.2 1.1.6 1.1.4 0 1.6-.8 1.6-2.2 0-1.6-1.2-2.8-1.6-2.8-.4 0-.6.7-.6 1.1Z"></path><path d="M12 2C7 2 7 9 7 9c0 3 1.5 6 5 6s5-3 5-6c0 0 0-7-5-7Z"></path></svg>
+              Add Team
+            </button>
+          </div>
           </div>
         </div>
       </div>
@@ -93,6 +100,32 @@
 
     </main>
 
+  </div>
+
+  <div id="add-team-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Team</h3>
+        <button id="close-team-modal" class="close-button">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="add-team-form">
+          <div class="form-group">
+            <label for="team-long-name" class="label">Team Long Name *</label>
+            <input type="text" id="team-long-name" class="input" required>
+          </div>
+          <div class="form-group">
+            <label for="team-short-name" class="label">Team Short Name *</label>
+            <input type="text" id="team-short-name" class="input" required>
+          </div>
+          <div id="team-modal-error-message" style="color: #dc3545; font-size: 0.875rem; margin-bottom: 1rem; display: none;"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancel-team-modal" class="btn-outline">Cancel</button>
+        <button type="button" id="submit-team" class="btn">Add Team</button>
+      </div>
+    </div>
   </div>
 
   <script src="js/teams.js"></script>

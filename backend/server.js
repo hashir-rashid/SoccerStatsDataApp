@@ -556,6 +556,112 @@ app.get('/api/external/saved-matches', (req, res) => {
   });
 });
 
+// Add new player
+app.post('/api/players', async (req, res) => {
+  try {
+    const { player_name, birthday, weight, height } = req.body;
+
+    if (!player_name) {
+      return res.status(400).json({ error: 'Player name is required' });
+    }
+
+    // Generate unique player_api_id and player_fifa_api_id
+    const getMaxIdsQuery = `SELECT MAX(player_api_id) as max_api_id, MAX(player_fifa_api_id) as max_fifa_id FROM Player`;
+    
+    sportsDb.get(getMaxIdsQuery, [], (err, row) => {
+      if (err) {
+        console.error('Error getting max IDs:', err);
+        return res.status(500).json({ error: 'Failed to generate player IDs' });
+      }
+
+      const player_api_id = (row.max_api_id || 0) + 1;
+      const player_fifa_api_id = (row.max_fifa_id || 0) + 1;
+
+      // Insert new player
+      const insertQuery = `
+        INSERT INTO Player (player_api_id, player_fifa_api_id, player_name, birthday, weight, height)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `;
+
+      sportsDb.run(insertQuery, [
+        player_api_id,
+        player_fifa_api_id,
+        player_name,
+        birthday || null,
+        weight || null,
+        height || null
+      ], function(insertErr) {
+        if (insertErr) {
+          console.error('Error inserting player:', insertErr);
+          return res.status(500).json({ error: 'Failed to add player to database' });
+        }
+
+        res.json({ 
+          success: true, 
+          message: 'Player added successfully',
+          playerId: this.lastID 
+        });
+      });
+    });
+
+  } catch (error) {
+    console.error('Error in add player route:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Add new team
+app.post('/api/teams', async (req, res) => {
+  try {
+    const { team_long_name, team_short_name } = req.body;
+
+    if (!team_long_name || !team_short_name) {
+      return res.status(400).json({ error: 'Team long name and short name are required' });
+    }
+
+    // Generate unique team_api_id and team_fifa_api_id
+    const getMaxIdsQuery = `SELECT MAX(team_api_id) as max_api_id, MAX(team_fifa_api_id) as max_fifa_id FROM Team`;
+    
+    sportsDb.get(getMaxIdsQuery, [], (err, row) => {
+      if (err) {
+        console.error('Error getting max IDs:', err);
+        return res.status(500).json({ error: 'Failed to generate team IDs' });
+      }
+
+      const team_api_id = (row.max_api_id || 0) + 1;
+      const team_fifa_api_id = (row.max_fifa_id || 0) + 1;
+
+      // Insert new team
+      const insertQuery = `
+        INSERT INTO Team (team_api_id, team_fifa_api_id, team_long_name, team_short_name)
+        VALUES (?, ?, ?, ?)
+      `;
+
+      sportsDb.run(insertQuery, [
+        team_api_id,
+        team_fifa_api_id,
+        team_long_name,
+        team_short_name
+      ], function(insertErr) {
+        if (insertErr) {
+          console.error('Error inserting team:', insertErr);
+          return res.status(500).json({ error: 'Failed to add team to database' });
+        }
+
+        res.json({ 
+          success: true, 
+          message: 'Team added successfully',
+          teamId: this.lastID 
+        });
+      });
+    });
+
+  } catch (error) {
+    console.error('Error in add team route:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // SPA catch-all handler
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dashboard.html'));

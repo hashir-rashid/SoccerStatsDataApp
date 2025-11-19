@@ -6,9 +6,35 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // 1.5 --- ADMIN PERMISSIONS CHECK ---
+  const userRole = localStorage.getItem("userRole");
+  
+  // Function to check admin permissions and update UI
+  function checkAdminPermissions() {
+    const addTeamButton = document.getElementById("add-team-button");
+    if (!addTeamButton) return;
+    
+    if (userRole !== "admin") {
+      addTeamButton.disabled = true;
+      addTeamButton.title = "Admin access required";
+      addTeamButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-xs">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        Admin Only
+      `;
+      addTeamButton.style.opacity = "0.6";
+      addTeamButton.style.cursor = "not-allowed";
+    }
+  }
+
+  // Call this on page load
+  checkAdminPermissions();
+
   // 2. --- POPULATE USER DATA (Header & Logout) ---
   const userName = localStorage.getItem("userName");
-  const userRole = localStorage.getItem("userRole");
   const userNameDisplay = document.getElementById("user-name-display");
   const logoutButton = document.getElementById("logout-button");
 
@@ -172,4 +198,117 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load the teams
   loadTeams(currentLimit, currentSort);
+
+  // 6. --- ADD TEAM FUNCTIONALITY ---
+  const addTeamButton = document.getElementById("add-team-button");
+  const addTeamModal = document.getElementById("add-team-modal");
+  const closeTeamModalButton = document.getElementById("close-team-modal");
+  const cancelTeamModalButton = document.getElementById("cancel-team-modal");
+  const submitTeamButton = document.getElementById("submit-team");
+  const addTeamForm = document.getElementById("add-team-form");
+  const teamModalErrorMessage = document.getElementById("team-modal-error-message");
+
+  // Open modal
+  if (addTeamButton) {
+    addTeamButton.addEventListener("click", () => {
+      // Double-check admin permissions on click
+      const currentUserRole = localStorage.getItem("userRole");
+      if (currentUserRole !== "admin") {
+        alert("Access denied. Admin privileges required to add teams.");
+        return;
+      }
+
+      addTeamForm.reset();
+      teamModalErrorMessage.style.display = "none";
+      addTeamModal.style.display = "flex";
+    });
+  }
+
+  // Close modal functions
+  function closeTeamModal() {
+    addTeamModal.style.display = "none";
+  }
+
+  if (closeTeamModalButton) {
+    closeTeamModalButton.addEventListener("click", closeTeamModal);
+  }
+
+  if (cancelTeamModalButton) {
+    cancelTeamModalButton.addEventListener("click", closeTeamModal);
+  }
+
+  // Close modal when clicking outside
+  addTeamModal.addEventListener("click", (event) => {
+    if (event.target === addTeamModal) {
+      closeTeamModal();
+    }
+  });
+
+  // Submit new team
+  if (submitTeamButton) {
+    submitTeamButton.addEventListener("click", async () => {
+      // Double-check admin permissions on click
+      const currentUserRole = localStorage.getItem("userRole");
+      if (currentUserRole !== "admin") {
+        alert("Access denied. Admin privileges required to add teams.");
+        return;
+      }
+
+      const teamLongName = document.getElementById("team-long-name").value.trim();
+      const teamShortName = document.getElementById("team-short-name").value.trim();
+
+      // Validate required fields
+      if (!teamLongName) {
+        showTeamModalError("Team long name is required");
+        return;
+      }
+      if (!teamShortName) {
+        showTeamModalError("Team short name is required");
+        return;
+      }
+
+      try {
+        // Show loading state
+        submitTeamButton.disabled = true;
+        submitTeamButton.textContent = "Adding...";
+
+        const newTeam = {
+          team_long_name: teamLongName,
+          team_short_name: teamShortName
+        };
+
+        const response = await fetch('/api/teams', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newTeam)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to add team: ${response.status}`);
+        }
+
+        // Success - close modal and refresh page
+        closeTeamModal();
+        window.location.reload();
+
+      } catch (err) {
+        console.error("Error adding team:", err);
+        showTeamModalError(err.message || "Failed to add team. Please try again.");
+      } finally {
+        // Only re-enable if user is still admin
+        if (localStorage.getItem("userRole") === "admin") {
+          submitTeamButton.disabled = false;
+          submitTeamButton.textContent = "Add Team";
+        }
+      }
+    });
+  }
+
+  function showTeamModalError(message) {
+    teamModalErrorMessage.textContent = message;
+    teamModalErrorMessage.style.display = "block";
+  }
 });

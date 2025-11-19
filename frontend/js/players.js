@@ -7,9 +7,35 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // 1.5 --- ADMIN PERMISSIONS CHECK ---
+  const userRole = localStorage.getItem("userRole");
+  
+  // Function to check admin permissions and update UI
+  function checkAdminPermissions() {
+    const addPlayerButton = document.getElementById("add-player-button");
+    if (!addPlayerButton) return;
+    
+    if (userRole !== "admin") {
+      addPlayerButton.disabled = true;
+      addPlayerButton.title = "Admin access required";
+      addPlayerButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-xs">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        Admin Only
+      `;
+      addPlayerButton.style.opacity = "0.6";
+      addPlayerButton.style.cursor = "not-allowed";
+    }
+  }
+
+  // Call this on page load
+  checkAdminPermissions();
+
   // 2. --- POPULATE USER DATA (Header & Logout) ---
   const userName = localStorage.getItem("userName");
-  const userRole = localStorage.getItem("userRole");
   const userNameDisplay = document.getElementById("user-name-display");
   const logoutButton = document.getElementById("logout-button");
 
@@ -352,4 +378,110 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load Players with default limit and sort
   loadPlayers();
+
+  // 7. --- ADD PLAYER FUNCTIONALITY ---
+  const addPlayerButton = document.getElementById("add-player-button");
+  const addPlayerModal = document.getElementById("add-player-modal");
+  const closeModalButton = document.getElementById("close-modal");
+  const cancelModalButton = document.getElementById("cancel-modal");
+  const submitPlayerButton = document.getElementById("submit-player");
+  const addPlayerForm = document.getElementById("add-player-form");
+  const modalErrorMessage = document.getElementById("modal-error-message");
+
+  // Open modal
+  if (addPlayerButton) {
+    addPlayerButton.addEventListener("click", () => {
+      addPlayerForm.reset();
+      modalErrorMessage.style.display = "none";
+      addPlayerModal.style.display = "flex";
+    });
+  }
+
+  // Close modal functions
+  function closeModal() {
+    addPlayerModal.style.display = "none";
+  }
+
+  if (closeModalButton) {
+    closeModalButton.addEventListener("click", closeModal);
+  }
+
+  if (cancelModalButton) {
+    cancelModalButton.addEventListener("click", closeModal);
+  }
+
+  // Close modal when clicking outside
+  addPlayerModal.addEventListener("click", (event) => {
+    if (event.target === addPlayerModal) {
+      closeModal();
+    }
+  });
+
+  // Submit new player
+  if (submitPlayerButton) {
+    submitPlayerButton.addEventListener("click", async () => {
+      // Double-check admin permissions on click
+      const currentUserRole = localStorage.getItem("userRole");
+      if (currentUserRole !== "admin") {
+        alert("Access denied. Admin privileges required to add players.");
+        return;
+      }
+
+      const playerName = document.getElementById("player-name").value.trim();
+      const playerBirthday = document.getElementById("player-birthday").value;
+      const playerWeight = document.getElementById("player-weight").value;
+      const playerHeight = document.getElementById("player-height").value;
+
+      // Validate required fields
+      if (!playerName) {
+        showModalError("Player name is required");
+        return;
+      }
+
+      try {
+        // Show loading state
+        submitPlayerButton.disabled = true;
+        submitPlayerButton.textContent = "Adding...";
+
+        const newPlayer = {
+          player_name: playerName,
+          birthday: playerBirthday || null,
+          weight: playerWeight ? parseFloat(playerWeight) : null,
+          height: playerHeight ? parseInt(playerHeight) : null
+        };
+
+        const response = await fetch('/api/players', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newPlayer)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Failed to add player: ${response.status}`);
+        }
+
+        // Success - close modal and refresh page
+        closeModal();
+        window.location.reload();
+
+      } catch (err) {
+        console.error("Error adding player:", err);
+        showModalError(err.message || "Failed to add player. Please try again.");
+      } finally {
+        // Only re-enable if user is still admin
+        if (localStorage.getItem("userRole") === "admin") {
+          submitPlayerButton.disabled = false;
+          submitPlayerButton.textContent = "Add Player";
+        }
+      }
+    });
+  }
+
+  function showModalError(message) {
+    modalErrorMessage.textContent = message;
+    modalErrorMessage.style.display = "block";
+  }
 });
